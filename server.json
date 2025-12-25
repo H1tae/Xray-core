@@ -1,0 +1,104 @@
+{
+  "log": { "loglevel": "warning" },
+
+  "api": {
+    "tag": "api",
+    "listen": "127.0.0.1:10085",
+    "services": [
+      "reflectionservice",
+      "handlerservice",
+      "ratelimitservice"
+    ]
+  },
+
+  "inbounds": [
+    {
+      "tag": "vless-reality-443",
+      "listen": "0.0.0.0",
+      "port": 443,
+      "protocol": "vless",
+
+      "settings": {
+        "clients": [],
+        "decryption": "none"
+      },
+
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "dest": "www.cloudflare.com:443",
+          "xver": 0,
+          "serverNames": ["www.cloudflare.com"],
+          "privateKey": "PASTE_YOUR_X25519_PRIVATE_KEY_HERE",
+          "shortIds": ["906f47df46efecc5"]
+        }
+      },
+
+      "sniffing": {
+        "enabled": false,
+        "destOverride": ["http", "tls", "quic"],
+        "metadataOnly": false,
+        "routeOnly": false
+      }
+    },
+
+    {
+      "tag": "vless-admin",
+      "listen": "127.0.0.1",
+      "port": 8443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb",
+            "email": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none"
+      }
+    },
+
+    {
+      "tag": "health-socks",
+      "listen": "127.0.0.1",
+      "port": 1081,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": false
+      }
+    }
+  ],
+
+  "outbounds": [
+    { "tag": "direct", "protocol": "freedom" },
+    { "tag": "block", "protocol": "blackhole" }
+  ],
+
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "type": "public",
+        "inboundTag": ["vless-reality-443"],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "health-check",
+        "inboundTag": ["health-socks"],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "admin",
+        "inboundTag": ["vless-admin"],
+        "outboundTag": "direct"
+      }
+    ]
+  }
+}

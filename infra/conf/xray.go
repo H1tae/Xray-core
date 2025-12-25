@@ -116,13 +116,13 @@ func (m *MuxConfig) Build() (*proxyman.MultiplexingConfig, error) {
 }
 
 type InboundDetourConfig struct {
-	Protocol       string                         `json:"protocol"`
-	PortList       *PortList                      `json:"port"`
-	ListenOn       *Address                       `json:"listen"`
-	Settings       *json.RawMessage               `json:"settings"`
-	Tag            string                         `json:"tag"`
-	StreamSetting  *StreamConfig                  `json:"streamSettings"`
-	SniffingConfig *SniffingConfig                `json:"sniffing"`
+	Protocol       string           `json:"protocol"`
+	PortList       *PortList        `json:"port"`
+	ListenOn       *Address         `json:"listen"`
+	Settings       *json.RawMessage `json:"settings"`
+	Tag            string           `json:"tag"`
+	StreamSetting  *StreamConfig    `json:"streamSettings"`
+	SniffingConfig *SniffingConfig  `json:"sniffing"`
 }
 
 // Build implements Buildable.
@@ -347,6 +347,9 @@ type Config struct {
 	Observatory      *ObservatoryConfig      `json:"observatory"`
 	BurstObservatory *BurstObservatoryConfig `json:"burstObservatory"`
 	Version          *VersionConfig          `json:"version"`
+
+	// custom
+	RateLimit *json.RawMessage `json:"ratelimit"`
 }
 
 func (c *Config) findInboundTag(tag string) int {
@@ -525,6 +528,17 @@ func (c *Config) Build() (*core.Config, error) {
 			return nil, errors.New("failed to build policy configuration").Base(err)
 		}
 		config.App = append(config.App, serial.ToTypedMessage(pc))
+	}
+
+	// custom
+	if c.RateLimit != nil {
+		var rlConf RateLimitConfig
+		if err := json.Unmarshal([]byte(*c.RateLimit), &rlConf); err != nil {
+			return nil, errors.New("failed to parse ratelimit config").Base(err)
+		}
+		if err := rlConf.Apply(); err != nil {
+			return nil, errors.New("failed to apply ratelimit config").Base(err)
+		}
 	}
 
 	if c.Reverse != nil {
