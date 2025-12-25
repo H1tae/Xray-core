@@ -1,6 +1,9 @@
 package all
 
 import (
+	// custom
+	_ "github.com/xtls/xray-core/app/ratelimit/command"
+
 	// The following are necessary as they register handlers in their init functions.
 
 	// Mandatory features. Can't remove unless there are replacements.

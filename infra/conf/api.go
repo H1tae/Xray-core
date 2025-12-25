@@ -11,6 +11,9 @@ import (
 	statsservice "github.com/xtls/xray-core/app/stats/command"
 	"github.com/xtls/xray-core/common/errors"
 	"github.com/xtls/xray-core/common/serial"
+
+	// custom
+	ratelimitcommand "github.com/xtls/xray-core/app/ratelimit/command"
 )
 
 type APIConfig struct {
@@ -39,6 +42,10 @@ func (c *APIConfig) Build() (*commander.Config, error) {
 			services = append(services, serial.ToTypedMessage(&observatoryservice.Config{}))
 		case "routingservice":
 			services = append(services, serial.ToTypedMessage(&routerservice.Config{}))
+
+		// custom
+		case "ratelimitservice":
+			services = append(services, serial.ToTypedMessage(&ratelimitcommand.Config{}))
 		}
 	}
 

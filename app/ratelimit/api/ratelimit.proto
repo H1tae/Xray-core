@@ -1,0 +1,182 @@
+syntax = "proto3";
+
+package ratelimit.v1;
+
+option go_package = "github.com/xtls/xray-core/app/ratelimit/api;ratelimitpb";
+
+service RateLimitService {
+  // ---- existing (оставим для отладки/совместимости) ----
+  rpc SetUserDefaultPerConnLimit(SetUserDefaultPerConnLimitRequest) returns (SetUserDefaultPerConnLimitResponse);
+  rpc ListUserConnections(ListUserConnectionsRequest) returns (ListUserConnectionsResponse);
+
+  rpc SetConnectionLimit(SetConnectionLimitRequest) returns (SetConnectionLimitResponse);
+  rpc ClearConnectionLimit(ClearConnectionLimitRequest) returns (ClearConnectionLimitResponse);
+
+  // ---- NEW: agent-friendly API ----
+
+  // Снимок всех активных "устройств" (uuid+src_ip) на ЭТОМ сервере.
+  rpc GetActiveDevicesSnapshot(GetActiveDevicesSnapshotRequest) returns (GetActiveDevicesSnapshotResponse);
+
+  // Список устройств конкретного пользователя (uuid) на ЭТОМ сервере.
+  rpc ListUserDevices(ListUserDevicesRequest) returns (ListUserDevicesResponse);
+
+  // Управление лимитом по "устройству" (device_key = uuid + "|" + src_ip).
+  rpc SetDeviceLimit(SetDeviceLimitRequest) returns (SetDeviceLimitResponse);
+
+  rpc ClearDeviceLimit(ClearDeviceLimitRequest) returns (ClearDeviceLimitResponse);
+
+  // Установить ОБЩИЙ лимит для пользователя (UUID).
+  // Лимит будет РАВНОМЕРНО поделен между всеми активными устройствами
+  // этого UUID на данном сервере.
+  rpc SetUserTotalLimit(SetUserTotalLimitRequest) returns (SetUserTotalLimitResponse);
+
+  rpc GetUserStats(GetUserStatsRequest) returns (GetUserStatsResponse);
+
+  rpc SetKeyMode(SetKeyModeRequest) returns (SetKeyModeResponse);
+
+  rpc GetKeyMode(GetKeyModeRequest) returns (GetKeyModeResponse);
+  
+  rpc SetGrace(SetGraceRequest) returns (SetGraceResponse);
+  
+  rpc GetGrace(GetGraceRequest) returns (GetGraceResponse);
+
+  rpc ClearUserEgressCache(ClearUserEgressCacheRequest) returns (ClearUserEgressCacheResponse);
+  
+}
+
+message ClearUserEgressCacheRequest {
+  string uuid = 1;
+}
+
+message ClearUserEgressCacheResponse {
+  uint32 cleared = 1; // сколько deviceEntry сбросили
+}
+
+message SetGraceRequest { uint32 seconds = 1; }
+
+message SetGraceResponse {}
+
+message GetGraceRequest {}
+
+message GetGraceResponse { uint32 seconds = 1; }
+
+message SetKeyModeRequest {
+  enum Mode { UUID = 0; DEVICE = 1; }
+  Mode mode = 1;
+}
+message SetKeyModeResponse {}
+
+message GetKeyModeRequest {}
+
+message GetKeyModeResponse { SetKeyModeRequest.Mode mode = 1; }
+
+message GetUserStatsRequest {
+  string uuid = 1;
+}
+
+message GetUserStatsResponse {
+  string uuid = 1;
+  uint32 device_count = 2;
+
+  uint64 rx_bytes_total = 3;
+  uint64 tx_bytes_total = 4;
+
+  uint64 started_at_unix_min = 5; // самое раннее Started среди устройств
+  uint64 last_seen_unix_max = 6;  // самое позднее LastSeen среди устройств
+}
+
+message SetUserTotalLimitRequest {
+  string uuid = 1;
+  uint64 down_bps = 2;
+  uint64 up_bps = 3;
+}
+
+message SetUserTotalLimitResponse {
+  uint32 device_count = 1;   // сколько устройств было найдено
+  uint64 per_device_down_bps = 2;
+  uint64 per_device_up_bps = 3;
+}
+
+message ConnectionInfo {
+  uint64 conn_id = 1;
+  uint64 started_at_unix = 2;
+  uint64 last_seen_unix = 3;
+  uint64 rx_bytes = 4;
+  uint64 tx_bytes = 5;
+}
+
+message SetUserDefaultPerConnLimitRequest {
+  string uuid = 1;
+  uint64 down_bps = 2;
+  uint64 up_bps = 3;
+}
+message SetUserDefaultPerConnLimitResponse {}
+
+message ListUserConnectionsRequest {
+  string uuid = 1;
+}
+message ListUserConnectionsResponse {
+  repeated ConnectionInfo connections = 1;
+}
+
+message SetConnectionLimitRequest {
+  uint64 conn_id = 1;
+  uint64 down_bps = 2;
+  uint64 up_bps = 3;
+}
+message SetConnectionLimitResponse {}
+
+message ClearConnectionLimitRequest {
+  uint64 conn_id = 1;
+}
+message ClearConnectionLimitResponse {}
+
+// -------- NEW: device-level --------
+
+message DeviceInfo {
+  string uuid = 1;
+
+  // IP адрес, который сервер видит как Source IP клиента (без порта)
+  string src_ip = 2;
+
+  // Уникальный ключ "устройства" на сервере: uuid + "|" + src_ip
+  string device_key = 3;
+
+  // Внутренний ConnID, к которому привязан лимитер (может меняться между рестартами)
+  uint64 conn_id = 4;
+
+  // Сколько inbound TCP соединений сейчас у этого устройства (refcount)
+  uint32 ref_count = 5;
+
+  // Момент, когда устройство было создано (первый старт) и последнее событие
+  uint64 started_at_unix = 6;
+  uint64 last_seen_unix = 7;
+
+  // Статистика трафика
+  uint64 rx_bytes = 8;
+  uint64 tx_bytes = 9;
+}
+
+message GetActiveDevicesSnapshotRequest {}
+message GetActiveDevicesSnapshotResponse {
+  repeated DeviceInfo devices = 1;
+}
+
+message ListUserDevicesRequest {
+  string uuid = 1;
+}
+message ListUserDevicesResponse {
+  repeated DeviceInfo devices = 1;
+}
+
+message SetDeviceLimitRequest {
+  string device_key = 1;
+  uint64 down_bps = 2;
+  uint64 up_bps = 3;
+}
+message SetDeviceLimitResponse {}
+
+message ClearDeviceLimitRequest {
+  string device_key = 1;
+}
+message ClearDeviceLimitResponse {}

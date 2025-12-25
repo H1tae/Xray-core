@@ -22,6 +22,9 @@ import (
 	"github.com/xtls/xray-core/features/stats"
 	"github.com/xtls/xray-core/transport"
 	"github.com/xtls/xray-core/transport/pipe"
+
+	// custom
+	"github.com/xtls/xray-core/app/ratelimit"
 )
 
 var errSniffingTimeout = errors.New("timeout on sniffing")
@@ -184,6 +187,14 @@ func (d *DefaultDispatcher) getLink(ctx context.Context) (*transport.Link, *tran
 		}
 	}
 
+	// custom
+	//  apply ratelimit wrapper for the main Dispatch() path ----
+	if connID, ok := ratelimit.EnsureConnIDFromContext(ctx); ok && connID != 0 {
+		// Оборачиваем именно outboundLink: outbound handler использует и Reader, и Writer,
+		// значит мы режем и uplink, и downlink в одном месте.
+		outboundLink = ratelimit.WrapLinkWithConnID(connID, outboundLink)
+	}
+
 	return inboundLink, outboundLink
 }
 
@@ -216,6 +227,11 @@ func WrapLink(ctx context.Context, policyManager policy.Manager, statsManager st
 		if p.Stats.UserOnline {
 			trackOnlineIP(ctx, statsManager, user.Email, sessionInbound.Source.Address.String())
 		}
+	}
+
+	// custom
+	if connID, ok := ratelimit.EnsureConnIDFromContext(ctx); ok && connID != 0 {
+		link = ratelimit.WrapLinkWithConnID(connID, link)
 	}
 
 	return link
@@ -440,6 +456,30 @@ func (d *DefaultDispatcher) routedDispatch(ctx context.Context, link *transport.
 	routingLink := routing_session.AsRoutingContext(ctx)
 	inTag := routingLink.GetInboundTag()
 	isPickRoute := 0
+
+	// custom
+	//	choose outbound per deviceEntry lifetime (uuid + optional srcIP)
+	if session.GetForcedOutboundTagFromContext(ctx) == "" {
+		inb := session.InboundFromContext(ctx)
+		if inb != nil && inb.User != nil && inb.User.Email != "" {
+			uuid := inb.User.Email
+
+			// deviceKey должен совпадать с тем, что ты используешь для DeviceStart/DeviceEnd
+			// если режим “uuid-only” => deviceKey=uuid
+			// если режим “uuid+srcIP” => deviceKey=uuid+"|"+srcIP
+			srcIP := ""
+			if inb.Source.IsValid() {
+				srcIP = inb.Source.Address.String()
+			}
+
+			deviceKey := ratelimit.BuildDeviceKey(uuid, srcIP)
+
+			if tag, ok, err := ratelimit.ChooseOutboundTagForDevice(ctx, uuid, deviceKey); err == nil && ok && tag != "" {
+				ctx = session.SetForcedOutboundTagToContext(ctx, tag)
+			}
+		}
+	}
+
 	if forcedOutboundTag := session.GetForcedOutboundTagFromContext(ctx); forcedOutboundTag != "" {
 		ctx = session.SetForcedOutboundTagToContext(ctx, "")
 		if h := d.ohm.GetHandler(forcedOutboundTag); h != nil {

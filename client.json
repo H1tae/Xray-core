@@ -1,0 +1,39 @@
+{
+  "log": { "loglevel": "warning" },
+
+  "inbounds": [
+    {
+      "tag": "socks-in",
+      "listen": "127.0.0.1",
+      "port": 1080,
+      "protocol": "socks",
+      "settings": { "udp": false }
+    }
+  ],
+
+  "outbounds": [
+    {
+      "tag": "to-server",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "127.0.0.1",
+            "port": 443,
+            "users": [
+              {
+                "id": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb",
+                "email": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb",
+                "encryption": "none"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "none"
+      }
+    }
+  ]
+}

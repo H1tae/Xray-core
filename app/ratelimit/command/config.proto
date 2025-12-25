@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package xray.app.ratelimit.command;
+
+option go_package = "github.com/xtls/xray-core/app/ratelimit/command;command";
+
+// Пока пусто. Позже можно добавить:
+// - путь к unix-сокету
+// - дефолтные лимиты
+
+message Config {
+  // "device" (uuid+srcIP) или "uuid"
+  string key_mode = 1;
+}
