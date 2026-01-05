@@ -8,7 +8,7 @@ import (
 var graceNs atomic.Int64
 
 func init() {
-	graceNs.Store(int64((10 * time.Second).Nanoseconds()))
+	graceNs.Store(int64((15 * time.Second).Nanoseconds()))
 }
 
 func GetGrace() time.Duration {

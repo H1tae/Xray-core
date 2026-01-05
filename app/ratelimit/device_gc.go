@@ -2,11 +2,16 @@ package ratelimit
 
 import (
 	"time"
-	
 )
 
 func init() {
 	go deviceGC()
+}
+
+func destroyConnID(id ConnID) {
+	buckets.Remove(id)
+	Limits.ClearConnLimit(id)
+	Global.Remove(id)
 }
 
 func deviceGC() {
@@ -33,8 +38,7 @@ func deviceGC() {
 
 		// чистим вне lock
 		for _, id := range toDelete {
-			buckets.Remove(id)
-			Global.Remove(id)
+			destroyConnID(id)
 		}
 	}
 }

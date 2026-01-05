@@ -17,6 +17,8 @@ service RateLimitService {
   // Снимок всех активных "устройств" (uuid+src_ip) на ЭТОМ сервере.
   rpc GetActiveDevicesSnapshot(GetActiveDevicesSnapshotRequest) returns (GetActiveDevicesSnapshotResponse);
 
+  rpc PeekActiveDevicesSnapshot(GetActiveDevicesSnapshotRequest) returns (GetActiveDevicesSnapshotResponse); 
+
   // Список устройств конкретного пользователя (uuid) на ЭТОМ сервере.
   rpc ListUserDevices(ListUserDevicesRequest) returns (ListUserDevicesResponse);
 
@@ -42,7 +44,24 @@ service RateLimitService {
 
   rpc ClearUserEgressCache(ClearUserEgressCacheRequest) returns (ClearUserEgressCacheResponse);
   
+  rpc ClearUserDefaultPerConnLimit(ClearUserDefaultPerConnLimitRequest) returns (ClearUserDefaultPerConnLimitResponse);
+
+  rpc ClearUserConnOverrideLimits(ClearUserConnOverrideLimitsRequest) returns (ClearUserConnOverrideLimitsResponse);
 }
+
+message ClearUserConnOverrideLimitsRequest {
+  string uuid = 1;
+}
+
+message ClearUserConnOverrideLimitsResponse {
+  uint32 cleared = 1;
+}
+
+message ClearUserDefaultPerConnLimitRequest {
+  string uuid = 1;
+}
+
+message ClearUserDefaultPerConnLimitResponse {}
 
 message ClearUserEgressCacheRequest {
   string uuid = 1;
