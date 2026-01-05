@@ -19,21 +19,24 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	RateLimitService_SetUserDefaultPerConnLimit_FullMethodName = "/ratelimit.v1.RateLimitService/SetUserDefaultPerConnLimit"
-	RateLimitService_ListUserConnections_FullMethodName        = "/ratelimit.v1.RateLimitService/ListUserConnections"
-	RateLimitService_SetConnectionLimit_FullMethodName         = "/ratelimit.v1.RateLimitService/SetConnectionLimit"
-	RateLimitService_ClearConnectionLimit_FullMethodName       = "/ratelimit.v1.RateLimitService/ClearConnectionLimit"
-	RateLimitService_GetActiveDevicesSnapshot_FullMethodName   = "/ratelimit.v1.RateLimitService/GetActiveDevicesSnapshot"
-	RateLimitService_ListUserDevices_FullMethodName            = "/ratelimit.v1.RateLimitService/ListUserDevices"
-	RateLimitService_SetDeviceLimit_FullMethodName             = "/ratelimit.v1.RateLimitService/SetDeviceLimit"
-	RateLimitService_ClearDeviceLimit_FullMethodName           = "/ratelimit.v1.RateLimitService/ClearDeviceLimit"
-	RateLimitService_SetUserTotalLimit_FullMethodName          = "/ratelimit.v1.RateLimitService/SetUserTotalLimit"
-	RateLimitService_GetUserStats_FullMethodName               = "/ratelimit.v1.RateLimitService/GetUserStats"
-	RateLimitService_SetKeyMode_FullMethodName                 = "/ratelimit.v1.RateLimitService/SetKeyMode"
-	RateLimitService_GetKeyMode_FullMethodName                 = "/ratelimit.v1.RateLimitService/GetKeyMode"
-	RateLimitService_SetGrace_FullMethodName                   = "/ratelimit.v1.RateLimitService/SetGrace"
-	RateLimitService_GetGrace_FullMethodName                   = "/ratelimit.v1.RateLimitService/GetGrace"
-	RateLimitService_ClearUserEgressCache_FullMethodName       = "/ratelimit.v1.RateLimitService/ClearUserEgressCache"
+	RateLimitService_SetUserDefaultPerConnLimit_FullMethodName   = "/ratelimit.v1.RateLimitService/SetUserDefaultPerConnLimit"
+	RateLimitService_ListUserConnections_FullMethodName          = "/ratelimit.v1.RateLimitService/ListUserConnections"
+	RateLimitService_SetConnectionLimit_FullMethodName           = "/ratelimit.v1.RateLimitService/SetConnectionLimit"
+	RateLimitService_ClearConnectionLimit_FullMethodName         = "/ratelimit.v1.RateLimitService/ClearConnectionLimit"
+	RateLimitService_GetActiveDevicesSnapshot_FullMethodName     = "/ratelimit.v1.RateLimitService/GetActiveDevicesSnapshot"
+	RateLimitService_PeekActiveDevicesSnapshot_FullMethodName    = "/ratelimit.v1.RateLimitService/PeekActiveDevicesSnapshot"
+	RateLimitService_ListUserDevices_FullMethodName              = "/ratelimit.v1.RateLimitService/ListUserDevices"
+	RateLimitService_SetDeviceLimit_FullMethodName               = "/ratelimit.v1.RateLimitService/SetDeviceLimit"
+	RateLimitService_ClearDeviceLimit_FullMethodName             = "/ratelimit.v1.RateLimitService/ClearDeviceLimit"
+	RateLimitService_SetUserTotalLimit_FullMethodName            = "/ratelimit.v1.RateLimitService/SetUserTotalLimit"
+	RateLimitService_GetUserStats_FullMethodName                 = "/ratelimit.v1.RateLimitService/GetUserStats"
+	RateLimitService_SetKeyMode_FullMethodName                   = "/ratelimit.v1.RateLimitService/SetKeyMode"
+	RateLimitService_GetKeyMode_FullMethodName                   = "/ratelimit.v1.RateLimitService/GetKeyMode"
+	RateLimitService_SetGrace_FullMethodName                     = "/ratelimit.v1.RateLimitService/SetGrace"
+	RateLimitService_GetGrace_FullMethodName                     = "/ratelimit.v1.RateLimitService/GetGrace"
+	RateLimitService_ClearUserEgressCache_FullMethodName         = "/ratelimit.v1.RateLimitService/ClearUserEgressCache"
+	RateLimitService_ClearUserDefaultPerConnLimit_FullMethodName = "/ratelimit.v1.RateLimitService/ClearUserDefaultPerConnLimit"
+	RateLimitService_ClearUserConnOverrideLimits_FullMethodName  = "/ratelimit.v1.RateLimitService/ClearUserConnOverrideLimits"
 )
 
 // RateLimitServiceClient is the client API for RateLimitService service.
@@ -47,6 +50,7 @@ type RateLimitServiceClient interface {
 	ClearConnectionLimit(ctx context.Context, in *ClearConnectionLimitRequest, opts ...grpc.CallOption) (*ClearConnectionLimitResponse, error)
 	// Снимок всех активных "устройств" (uuid+src_ip) на ЭТОМ сервере.
 	GetActiveDevicesSnapshot(ctx context.Context, in *GetActiveDevicesSnapshotRequest, opts ...grpc.CallOption) (*GetActiveDevicesSnapshotResponse, error)
+	PeekActiveDevicesSnapshot(ctx context.Context, in *GetActiveDevicesSnapshotRequest, opts ...grpc.CallOption) (*GetActiveDevicesSnapshotResponse, error)
 	// Список устройств конкретного пользователя (uuid) на ЭТОМ сервере.
 	ListUserDevices(ctx context.Context, in *ListUserDevicesRequest, opts ...grpc.CallOption) (*ListUserDevicesResponse, error)
 	// Управление лимитом по "устройству" (device_key = uuid + "|" + src_ip).
@@ -62,6 +66,8 @@ type RateLimitServiceClient interface {
 	SetGrace(ctx context.Context, in *SetGraceRequest, opts ...grpc.CallOption) (*SetGraceResponse, error)
 	GetGrace(ctx context.Context, in *GetGraceRequest, opts ...grpc.CallOption) (*GetGraceResponse, error)
 	ClearUserEgressCache(ctx context.Context, in *ClearUserEgressCacheRequest, opts ...grpc.CallOption) (*ClearUserEgressCacheResponse, error)
+	ClearUserDefaultPerConnLimit(ctx context.Context, in *ClearUserDefaultPerConnLimitRequest, opts ...grpc.CallOption) (*ClearUserDefaultPerConnLimitResponse, error)
+	ClearUserConnOverrideLimits(ctx context.Context, in *ClearUserConnOverrideLimitsRequest, opts ...grpc.CallOption) (*ClearUserConnOverrideLimitsResponse, error)
 }
 
 type rateLimitServiceClient struct {
@@ -116,6 +122,16 @@ func (c *rateLimitServiceClient) GetActiveDevicesSnapshot(ctx context.Context, i
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetActiveDevicesSnapshotResponse)
 	err := c.cc.Invoke(ctx, RateLimitService_GetActiveDevicesSnapshot_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rateLimitServiceClient) PeekActiveDevicesSnapshot(ctx context.Context, in *GetActiveDevicesSnapshotRequest, opts ...grpc.CallOption) (*GetActiveDevicesSnapshotResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetActiveDevicesSnapshotResponse)
+	err := c.cc.Invoke(ctx, RateLimitService_PeekActiveDevicesSnapshot_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -222,6 +238,26 @@ func (c *rateLimitServiceClient) ClearUserEgressCache(ctx context.Context, in *C
 	return out, nil
 }
 
+func (c *rateLimitServiceClient) ClearUserDefaultPerConnLimit(ctx context.Context, in *ClearUserDefaultPerConnLimitRequest, opts ...grpc.CallOption) (*ClearUserDefaultPerConnLimitResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ClearUserDefaultPerConnLimitResponse)
+	err := c.cc.Invoke(ctx, RateLimitService_ClearUserDefaultPerConnLimit_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rateLimitServiceClient) ClearUserConnOverrideLimits(ctx context.Context, in *ClearUserConnOverrideLimitsRequest, opts ...grpc.CallOption) (*ClearUserConnOverrideLimitsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ClearUserConnOverrideLimitsResponse)
+	err := c.cc.Invoke(ctx, RateLimitService_ClearUserConnOverrideLimits_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RateLimitServiceServer is the server API for RateLimitService service.
 // All implementations must embed UnimplementedRateLimitServiceServer
 // for forward compatibility.
@@ -233,6 +269,7 @@ type RateLimitServiceServer interface {
 	ClearConnectionLimit(context.Context, *ClearConnectionLimitRequest) (*ClearConnectionLimitResponse, error)
 	// Снимок всех активных "устройств" (uuid+src_ip) на ЭТОМ сервере.
 	GetActiveDevicesSnapshot(context.Context, *GetActiveDevicesSnapshotRequest) (*GetActiveDevicesSnapshotResponse, error)
+	PeekActiveDevicesSnapshot(context.Context, *GetActiveDevicesSnapshotRequest) (*GetActiveDevicesSnapshotResponse, error)
 	// Список устройств конкретного пользователя (uuid) на ЭТОМ сервере.
 	ListUserDevices(context.Context, *ListUserDevicesRequest) (*ListUserDevicesResponse, error)
 	// Управление лимитом по "устройству" (device_key = uuid + "|" + src_ip).
@@ -248,6 +285,8 @@ type RateLimitServiceServer interface {
 	SetGrace(context.Context, *SetGraceRequest) (*SetGraceResponse, error)
 	GetGrace(context.Context, *GetGraceRequest) (*GetGraceResponse, error)
 	ClearUserEgressCache(context.Context, *ClearUserEgressCacheRequest) (*ClearUserEgressCacheResponse, error)
+	ClearUserDefaultPerConnLimit(context.Context, *ClearUserDefaultPerConnLimitRequest) (*ClearUserDefaultPerConnLimitResponse, error)
+	ClearUserConnOverrideLimits(context.Context, *ClearUserConnOverrideLimitsRequest) (*ClearUserConnOverrideLimitsResponse, error)
 	mustEmbedUnimplementedRateLimitServiceServer()
 }
 
@@ -272,6 +311,9 @@ func (UnimplementedRateLimitServiceServer) ClearConnectionLimit(context.Context,
 }
 func (UnimplementedRateLimitServiceServer) GetActiveDevicesSnapshot(context.Context, *GetActiveDevicesSnapshotRequest) (*GetActiveDevicesSnapshotResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetActiveDevicesSnapshot not implemented")
+}
+func (UnimplementedRateLimitServiceServer) PeekActiveDevicesSnapshot(context.Context, *GetActiveDevicesSnapshotRequest) (*GetActiveDevicesSnapshotResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PeekActiveDevicesSnapshot not implemented")
 }
 func (UnimplementedRateLimitServiceServer) ListUserDevices(context.Context, *ListUserDevicesRequest) (*ListUserDevicesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListUserDevices not implemented")
@@ -302,6 +344,12 @@ func (UnimplementedRateLimitServiceServer) GetGrace(context.Context, *GetGraceRe
 }
 func (UnimplementedRateLimitServiceServer) ClearUserEgressCache(context.Context, *ClearUserEgressCacheRequest) (*ClearUserEgressCacheResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ClearUserEgressCache not implemented")
+}
+func (UnimplementedRateLimitServiceServer) ClearUserDefaultPerConnLimit(context.Context, *ClearUserDefaultPerConnLimitRequest) (*ClearUserDefaultPerConnLimitResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ClearUserDefaultPerConnLimit not implemented")
+}
+func (UnimplementedRateLimitServiceServer) ClearUserConnOverrideLimits(context.Context, *ClearUserConnOverrideLimitsRequest) (*ClearUserConnOverrideLimitsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ClearUserConnOverrideLimits not implemented")
 }
 func (UnimplementedRateLimitServiceServer) mustEmbedUnimplementedRateLimitServiceServer() {}
 func (UnimplementedRateLimitServiceServer) testEmbeddedByValue()                          {}
@@ -410,6 +458,24 @@ func _RateLimitService_GetActiveDevicesSnapshot_Handler(srv interface{}, ctx con
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RateLimitServiceServer).GetActiveDevicesSnapshot(ctx, req.(*GetActiveDevicesSnapshotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RateLimitService_PeekActiveDevicesSnapshot_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetActiveDevicesSnapshotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RateLimitServiceServer).PeekActiveDevicesSnapshot(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RateLimitService_PeekActiveDevicesSnapshot_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RateLimitServiceServer).PeekActiveDevicesSnapshot(ctx, req.(*GetActiveDevicesSnapshotRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -594,6 +660,42 @@ func _RateLimitService_ClearUserEgressCache_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RateLimitService_ClearUserDefaultPerConnLimit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClearUserDefaultPerConnLimitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RateLimitServiceServer).ClearUserDefaultPerConnLimit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RateLimitService_ClearUserDefaultPerConnLimit_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RateLimitServiceServer).ClearUserDefaultPerConnLimit(ctx, req.(*ClearUserDefaultPerConnLimitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RateLimitService_ClearUserConnOverrideLimits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClearUserConnOverrideLimitsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RateLimitServiceServer).ClearUserConnOverrideLimits(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RateLimitService_ClearUserConnOverrideLimits_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RateLimitServiceServer).ClearUserConnOverrideLimits(ctx, req.(*ClearUserConnOverrideLimitsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RateLimitService_ServiceDesc is the grpc.ServiceDesc for RateLimitService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -620,6 +722,10 @@ var RateLimitService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetActiveDevicesSnapshot",
 			Handler:    _RateLimitService_GetActiveDevicesSnapshot_Handler,
+		},
+		{
+			MethodName: "PeekActiveDevicesSnapshot",
+			Handler:    _RateLimitService_PeekActiveDevicesSnapshot_Handler,
 		},
 		{
 			MethodName: "ListUserDevices",
@@ -660,6 +766,14 @@ var RateLimitService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ClearUserEgressCache",
 			Handler:    _RateLimitService_ClearUserEgressCache_Handler,
+		},
+		{
+			MethodName: "ClearUserDefaultPerConnLimit",
+			Handler:    _RateLimitService_ClearUserDefaultPerConnLimit_Handler,
+		},
+		{
+			MethodName: "ClearUserConnOverrideLimits",
+			Handler:    _RateLimitService_ClearUserConnOverrideLimits_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

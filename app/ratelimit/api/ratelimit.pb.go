@@ -64,7 +64,175 @@ func (x SetKeyModeRequest_Mode) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SetKeyModeRequest_Mode.Descriptor instead.
 func (SetKeyModeRequest_Mode) EnumDescriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{6, 0}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{10, 0}
+}
+
+type ClearUserConnOverrideLimitsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClearUserConnOverrideLimitsRequest) Reset() {
+	*x = ClearUserConnOverrideLimitsRequest{}
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClearUserConnOverrideLimitsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClearUserConnOverrideLimitsRequest) ProtoMessage() {}
+
+func (x *ClearUserConnOverrideLimitsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClearUserConnOverrideLimitsRequest.ProtoReflect.Descriptor instead.
+func (*ClearUserConnOverrideLimitsRequest) Descriptor() ([]byte, []int) {
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *ClearUserConnOverrideLimitsRequest) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+type ClearUserConnOverrideLimitsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Cleared       uint32                 `protobuf:"varint,1,opt,name=cleared,proto3" json:"cleared,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClearUserConnOverrideLimitsResponse) Reset() {
+	*x = ClearUserConnOverrideLimitsResponse{}
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClearUserConnOverrideLimitsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClearUserConnOverrideLimitsResponse) ProtoMessage() {}
+
+func (x *ClearUserConnOverrideLimitsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClearUserConnOverrideLimitsResponse.ProtoReflect.Descriptor instead.
+func (*ClearUserConnOverrideLimitsResponse) Descriptor() ([]byte, []int) {
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ClearUserConnOverrideLimitsResponse) GetCleared() uint32 {
+	if x != nil {
+		return x.Cleared
+	}
+	return 0
+}
+
+type ClearUserDefaultPerConnLimitRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClearUserDefaultPerConnLimitRequest) Reset() {
+	*x = ClearUserDefaultPerConnLimitRequest{}
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClearUserDefaultPerConnLimitRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClearUserDefaultPerConnLimitRequest) ProtoMessage() {}
+
+func (x *ClearUserDefaultPerConnLimitRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClearUserDefaultPerConnLimitRequest.ProtoReflect.Descriptor instead.
+func (*ClearUserDefaultPerConnLimitRequest) Descriptor() ([]byte, []int) {
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ClearUserDefaultPerConnLimitRequest) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+type ClearUserDefaultPerConnLimitResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClearUserDefaultPerConnLimitResponse) Reset() {
+	*x = ClearUserDefaultPerConnLimitResponse{}
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClearUserDefaultPerConnLimitResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClearUserDefaultPerConnLimitResponse) ProtoMessage() {}
+
+func (x *ClearUserDefaultPerConnLimitResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClearUserDefaultPerConnLimitResponse.ProtoReflect.Descriptor instead.
+func (*ClearUserDefaultPerConnLimitResponse) Descriptor() ([]byte, []int) {
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{3}
 }
 
 type ClearUserEgressCacheRequest struct {
@@ -76,7 +244,7 @@ type ClearUserEgressCacheRequest struct {
 
 func (x *ClearUserEgressCacheRequest) Reset() {
 	*x = ClearUserEgressCacheRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[0]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -88,7 +256,7 @@ func (x *ClearUserEgressCacheRequest) String() string {
 func (*ClearUserEgressCacheRequest) ProtoMessage() {}
 
 func (x *ClearUserEgressCacheRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[0]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -101,7 +269,7 @@ func (x *ClearUserEgressCacheRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClearUserEgressCacheRequest.ProtoReflect.Descriptor instead.
 func (*ClearUserEgressCacheRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{0}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ClearUserEgressCacheRequest) GetUuid() string {
@@ -120,7 +288,7 @@ type ClearUserEgressCacheResponse struct {
 
 func (x *ClearUserEgressCacheResponse) Reset() {
 	*x = ClearUserEgressCacheResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[1]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -132,7 +300,7 @@ func (x *ClearUserEgressCacheResponse) String() string {
 func (*ClearUserEgressCacheResponse) ProtoMessage() {}
 
 func (x *ClearUserEgressCacheResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[1]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -145,7 +313,7 @@ func (x *ClearUserEgressCacheResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClearUserEgressCacheResponse.ProtoReflect.Descriptor instead.
 func (*ClearUserEgressCacheResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{1}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ClearUserEgressCacheResponse) GetCleared() uint32 {
@@ -164,7 +332,7 @@ type SetGraceRequest struct {
 
 func (x *SetGraceRequest) Reset() {
 	*x = SetGraceRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[2]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -176,7 +344,7 @@ func (x *SetGraceRequest) String() string {
 func (*SetGraceRequest) ProtoMessage() {}
 
 func (x *SetGraceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[2]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -189,7 +357,7 @@ func (x *SetGraceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetGraceRequest.ProtoReflect.Descriptor instead.
 func (*SetGraceRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{2}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *SetGraceRequest) GetSeconds() uint32 {
@@ -207,7 +375,7 @@ type SetGraceResponse struct {
 
 func (x *SetGraceResponse) Reset() {
 	*x = SetGraceResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[3]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -219,7 +387,7 @@ func (x *SetGraceResponse) String() string {
 func (*SetGraceResponse) ProtoMessage() {}
 
 func (x *SetGraceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[3]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -232,7 +400,7 @@ func (x *SetGraceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetGraceResponse.ProtoReflect.Descriptor instead.
 func (*SetGraceResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{3}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{7}
 }
 
 type GetGraceRequest struct {
@@ -243,7 +411,7 @@ type GetGraceRequest struct {
 
 func (x *GetGraceRequest) Reset() {
 	*x = GetGraceRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[4]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -255,7 +423,7 @@ func (x *GetGraceRequest) String() string {
 func (*GetGraceRequest) ProtoMessage() {}
 
 func (x *GetGraceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[4]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -268,7 +436,7 @@ func (x *GetGraceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetGraceRequest.ProtoReflect.Descriptor instead.
 func (*GetGraceRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{4}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{8}
 }
 
 type GetGraceResponse struct {
@@ -280,7 +448,7 @@ type GetGraceResponse struct {
 
 func (x *GetGraceResponse) Reset() {
 	*x = GetGraceResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[5]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -292,7 +460,7 @@ func (x *GetGraceResponse) String() string {
 func (*GetGraceResponse) ProtoMessage() {}
 
 func (x *GetGraceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[5]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -305,7 +473,7 @@ func (x *GetGraceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetGraceResponse.ProtoReflect.Descriptor instead.
 func (*GetGraceResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{5}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *GetGraceResponse) GetSeconds() uint32 {
@@ -324,7 +492,7 @@ type SetKeyModeRequest struct {
 
 func (x *SetKeyModeRequest) Reset() {
 	*x = SetKeyModeRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[6]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -336,7 +504,7 @@ func (x *SetKeyModeRequest) String() string {
 func (*SetKeyModeRequest) ProtoMessage() {}
 
 func (x *SetKeyModeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[6]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -349,7 +517,7 @@ func (x *SetKeyModeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetKeyModeRequest.ProtoReflect.Descriptor instead.
 func (*SetKeyModeRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{6}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *SetKeyModeRequest) GetMode() SetKeyModeRequest_Mode {
@@ -367,7 +535,7 @@ type SetKeyModeResponse struct {
 
 func (x *SetKeyModeResponse) Reset() {
 	*x = SetKeyModeResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[7]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -379,7 +547,7 @@ func (x *SetKeyModeResponse) String() string {
 func (*SetKeyModeResponse) ProtoMessage() {}
 
 func (x *SetKeyModeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[7]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -392,7 +560,7 @@ func (x *SetKeyModeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetKeyModeResponse.ProtoReflect.Descriptor instead.
 func (*SetKeyModeResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{7}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{11}
 }
 
 type GetKeyModeRequest struct {
@@ -403,7 +571,7 @@ type GetKeyModeRequest struct {
 
 func (x *GetKeyModeRequest) Reset() {
 	*x = GetKeyModeRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[8]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -415,7 +583,7 @@ func (x *GetKeyModeRequest) String() string {
 func (*GetKeyModeRequest) ProtoMessage() {}
 
 func (x *GetKeyModeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[8]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -428,7 +596,7 @@ func (x *GetKeyModeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetKeyModeRequest.ProtoReflect.Descriptor instead.
 func (*GetKeyModeRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{8}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{12}
 }
 
 type GetKeyModeResponse struct {
@@ -440,7 +608,7 @@ type GetKeyModeResponse struct {
 
 func (x *GetKeyModeResponse) Reset() {
 	*x = GetKeyModeResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[9]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -452,7 +620,7 @@ func (x *GetKeyModeResponse) String() string {
 func (*GetKeyModeResponse) ProtoMessage() {}
 
 func (x *GetKeyModeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[9]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -465,7 +633,7 @@ func (x *GetKeyModeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetKeyModeResponse.ProtoReflect.Descriptor instead.
 func (*GetKeyModeResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{9}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *GetKeyModeResponse) GetMode() SetKeyModeRequest_Mode {
@@ -484,7 +652,7 @@ type GetUserStatsRequest struct {
 
 func (x *GetUserStatsRequest) Reset() {
 	*x = GetUserStatsRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[10]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -496,7 +664,7 @@ func (x *GetUserStatsRequest) String() string {
 func (*GetUserStatsRequest) ProtoMessage() {}
 
 func (x *GetUserStatsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[10]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -509,7 +677,7 @@ func (x *GetUserStatsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserStatsRequest.ProtoReflect.Descriptor instead.
 func (*GetUserStatsRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{10}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *GetUserStatsRequest) GetUuid() string {
@@ -533,7 +701,7 @@ type GetUserStatsResponse struct {
 
 func (x *GetUserStatsResponse) Reset() {
 	*x = GetUserStatsResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[11]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -545,7 +713,7 @@ func (x *GetUserStatsResponse) String() string {
 func (*GetUserStatsResponse) ProtoMessage() {}
 
 func (x *GetUserStatsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[11]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -558,7 +726,7 @@ func (x *GetUserStatsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserStatsResponse.ProtoReflect.Descriptor instead.
 func (*GetUserStatsResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{11}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *GetUserStatsResponse) GetUuid() string {
@@ -614,7 +782,7 @@ type SetUserTotalLimitRequest struct {
 
 func (x *SetUserTotalLimitRequest) Reset() {
 	*x = SetUserTotalLimitRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[12]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -626,7 +794,7 @@ func (x *SetUserTotalLimitRequest) String() string {
 func (*SetUserTotalLimitRequest) ProtoMessage() {}
 
 func (x *SetUserTotalLimitRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[12]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -639,7 +807,7 @@ func (x *SetUserTotalLimitRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetUserTotalLimitRequest.ProtoReflect.Descriptor instead.
 func (*SetUserTotalLimitRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{12}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *SetUserTotalLimitRequest) GetUuid() string {
@@ -674,7 +842,7 @@ type SetUserTotalLimitResponse struct {
 
 func (x *SetUserTotalLimitResponse) Reset() {
 	*x = SetUserTotalLimitResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[13]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -686,7 +854,7 @@ func (x *SetUserTotalLimitResponse) String() string {
 func (*SetUserTotalLimitResponse) ProtoMessage() {}
 
 func (x *SetUserTotalLimitResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[13]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -699,7 +867,7 @@ func (x *SetUserTotalLimitResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetUserTotalLimitResponse.ProtoReflect.Descriptor instead.
 func (*SetUserTotalLimitResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{13}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *SetUserTotalLimitResponse) GetDeviceCount() uint32 {
@@ -736,7 +904,7 @@ type ConnectionInfo struct {
 
 func (x *ConnectionInfo) Reset() {
 	*x = ConnectionInfo{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[14]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -748,7 +916,7 @@ func (x *ConnectionInfo) String() string {
 func (*ConnectionInfo) ProtoMessage() {}
 
 func (x *ConnectionInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[14]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -761,7 +929,7 @@ func (x *ConnectionInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectionInfo.ProtoReflect.Descriptor instead.
 func (*ConnectionInfo) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{14}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ConnectionInfo) GetConnId() uint64 {
@@ -810,7 +978,7 @@ type SetUserDefaultPerConnLimitRequest struct {
 
 func (x *SetUserDefaultPerConnLimitRequest) Reset() {
 	*x = SetUserDefaultPerConnLimitRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[15]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -822,7 +990,7 @@ func (x *SetUserDefaultPerConnLimitRequest) String() string {
 func (*SetUserDefaultPerConnLimitRequest) ProtoMessage() {}
 
 func (x *SetUserDefaultPerConnLimitRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[15]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -835,7 +1003,7 @@ func (x *SetUserDefaultPerConnLimitRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use SetUserDefaultPerConnLimitRequest.ProtoReflect.Descriptor instead.
 func (*SetUserDefaultPerConnLimitRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{15}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *SetUserDefaultPerConnLimitRequest) GetUuid() string {
@@ -867,7 +1035,7 @@ type SetUserDefaultPerConnLimitResponse struct {
 
 func (x *SetUserDefaultPerConnLimitResponse) Reset() {
 	*x = SetUserDefaultPerConnLimitResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[16]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -879,7 +1047,7 @@ func (x *SetUserDefaultPerConnLimitResponse) String() string {
 func (*SetUserDefaultPerConnLimitResponse) ProtoMessage() {}
 
 func (x *SetUserDefaultPerConnLimitResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[16]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -892,7 +1060,7 @@ func (x *SetUserDefaultPerConnLimitResponse) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use SetUserDefaultPerConnLimitResponse.ProtoReflect.Descriptor instead.
 func (*SetUserDefaultPerConnLimitResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{16}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{20}
 }
 
 type ListUserConnectionsRequest struct {
@@ -904,7 +1072,7 @@ type ListUserConnectionsRequest struct {
 
 func (x *ListUserConnectionsRequest) Reset() {
 	*x = ListUserConnectionsRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[17]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -916,7 +1084,7 @@ func (x *ListUserConnectionsRequest) String() string {
 func (*ListUserConnectionsRequest) ProtoMessage() {}
 
 func (x *ListUserConnectionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[17]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -929,7 +1097,7 @@ func (x *ListUserConnectionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListUserConnectionsRequest.ProtoReflect.Descriptor instead.
 func (*ListUserConnectionsRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{17}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ListUserConnectionsRequest) GetUuid() string {
@@ -948,7 +1116,7 @@ type ListUserConnectionsResponse struct {
 
 func (x *ListUserConnectionsResponse) Reset() {
 	*x = ListUserConnectionsResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[18]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -960,7 +1128,7 @@ func (x *ListUserConnectionsResponse) String() string {
 func (*ListUserConnectionsResponse) ProtoMessage() {}
 
 func (x *ListUserConnectionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[18]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -973,7 +1141,7 @@ func (x *ListUserConnectionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListUserConnectionsResponse.ProtoReflect.Descriptor instead.
 func (*ListUserConnectionsResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{18}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ListUserConnectionsResponse) GetConnections() []*ConnectionInfo {
@@ -994,7 +1162,7 @@ type SetConnectionLimitRequest struct {
 
 func (x *SetConnectionLimitRequest) Reset() {
 	*x = SetConnectionLimitRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[19]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1006,7 +1174,7 @@ func (x *SetConnectionLimitRequest) String() string {
 func (*SetConnectionLimitRequest) ProtoMessage() {}
 
 func (x *SetConnectionLimitRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[19]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1019,7 +1187,7 @@ func (x *SetConnectionLimitRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetConnectionLimitRequest.ProtoReflect.Descriptor instead.
 func (*SetConnectionLimitRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{19}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *SetConnectionLimitRequest) GetConnId() uint64 {
@@ -1051,7 +1219,7 @@ type SetConnectionLimitResponse struct {
 
 func (x *SetConnectionLimitResponse) Reset() {
 	*x = SetConnectionLimitResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[20]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1063,7 +1231,7 @@ func (x *SetConnectionLimitResponse) String() string {
 func (*SetConnectionLimitResponse) ProtoMessage() {}
 
 func (x *SetConnectionLimitResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[20]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1076,7 +1244,7 @@ func (x *SetConnectionLimitResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetConnectionLimitResponse.ProtoReflect.Descriptor instead.
 func (*SetConnectionLimitResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{20}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{24}
 }
 
 type ClearConnectionLimitRequest struct {
@@ -1088,7 +1256,7 @@ type ClearConnectionLimitRequest struct {
 
 func (x *ClearConnectionLimitRequest) Reset() {
 	*x = ClearConnectionLimitRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[21]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1100,7 +1268,7 @@ func (x *ClearConnectionLimitRequest) String() string {
 func (*ClearConnectionLimitRequest) ProtoMessage() {}
 
 func (x *ClearConnectionLimitRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[21]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1113,7 +1281,7 @@ func (x *ClearConnectionLimitRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClearConnectionLimitRequest.ProtoReflect.Descriptor instead.
 func (*ClearConnectionLimitRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{21}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *ClearConnectionLimitRequest) GetConnId() uint64 {
@@ -1131,7 +1299,7 @@ type ClearConnectionLimitResponse struct {
 
 func (x *ClearConnectionLimitResponse) Reset() {
 	*x = ClearConnectionLimitResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[22]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1143,7 +1311,7 @@ func (x *ClearConnectionLimitResponse) String() string {
 func (*ClearConnectionLimitResponse) ProtoMessage() {}
 
 func (x *ClearConnectionLimitResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[22]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1156,7 +1324,7 @@ func (x *ClearConnectionLimitResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClearConnectionLimitResponse.ProtoReflect.Descriptor instead.
 func (*ClearConnectionLimitResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{22}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{26}
 }
 
 type DeviceInfo struct {
@@ -1182,7 +1350,7 @@ type DeviceInfo struct {
 
 func (x *DeviceInfo) Reset() {
 	*x = DeviceInfo{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[23]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1194,7 +1362,7 @@ func (x *DeviceInfo) String() string {
 func (*DeviceInfo) ProtoMessage() {}
 
 func (x *DeviceInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[23]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1207,7 +1375,7 @@ func (x *DeviceInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeviceInfo.ProtoReflect.Descriptor instead.
 func (*DeviceInfo) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{23}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *DeviceInfo) GetUuid() string {
@@ -1281,7 +1449,7 @@ type GetActiveDevicesSnapshotRequest struct {
 
 func (x *GetActiveDevicesSnapshotRequest) Reset() {
 	*x = GetActiveDevicesSnapshotRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[24]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1293,7 +1461,7 @@ func (x *GetActiveDevicesSnapshotRequest) String() string {
 func (*GetActiveDevicesSnapshotRequest) ProtoMessage() {}
 
 func (x *GetActiveDevicesSnapshotRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[24]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1306,7 +1474,7 @@ func (x *GetActiveDevicesSnapshotRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetActiveDevicesSnapshotRequest.ProtoReflect.Descriptor instead.
 func (*GetActiveDevicesSnapshotRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{24}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{28}
 }
 
 type GetActiveDevicesSnapshotResponse struct {
@@ -1318,7 +1486,7 @@ type GetActiveDevicesSnapshotResponse struct {
 
 func (x *GetActiveDevicesSnapshotResponse) Reset() {
 	*x = GetActiveDevicesSnapshotResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[25]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1330,7 +1498,7 @@ func (x *GetActiveDevicesSnapshotResponse) String() string {
 func (*GetActiveDevicesSnapshotResponse) ProtoMessage() {}
 
 func (x *GetActiveDevicesSnapshotResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[25]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1343,7 +1511,7 @@ func (x *GetActiveDevicesSnapshotResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetActiveDevicesSnapshotResponse.ProtoReflect.Descriptor instead.
 func (*GetActiveDevicesSnapshotResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{25}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *GetActiveDevicesSnapshotResponse) GetDevices() []*DeviceInfo {
@@ -1362,7 +1530,7 @@ type ListUserDevicesRequest struct {
 
 func (x *ListUserDevicesRequest) Reset() {
 	*x = ListUserDevicesRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[26]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1374,7 +1542,7 @@ func (x *ListUserDevicesRequest) String() string {
 func (*ListUserDevicesRequest) ProtoMessage() {}
 
 func (x *ListUserDevicesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[26]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1387,7 +1555,7 @@ func (x *ListUserDevicesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListUserDevicesRequest.ProtoReflect.Descriptor instead.
 func (*ListUserDevicesRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{26}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ListUserDevicesRequest) GetUuid() string {
@@ -1406,7 +1574,7 @@ type ListUserDevicesResponse struct {
 
 func (x *ListUserDevicesResponse) Reset() {
 	*x = ListUserDevicesResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[27]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1418,7 +1586,7 @@ func (x *ListUserDevicesResponse) String() string {
 func (*ListUserDevicesResponse) ProtoMessage() {}
 
 func (x *ListUserDevicesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[27]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1431,7 +1599,7 @@ func (x *ListUserDevicesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListUserDevicesResponse.ProtoReflect.Descriptor instead.
 func (*ListUserDevicesResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{27}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *ListUserDevicesResponse) GetDevices() []*DeviceInfo {
@@ -1452,7 +1620,7 @@ type SetDeviceLimitRequest struct {
 
 func (x *SetDeviceLimitRequest) Reset() {
 	*x = SetDeviceLimitRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[28]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1464,7 +1632,7 @@ func (x *SetDeviceLimitRequest) String() string {
 func (*SetDeviceLimitRequest) ProtoMessage() {}
 
 func (x *SetDeviceLimitRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[28]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1477,7 +1645,7 @@ func (x *SetDeviceLimitRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetDeviceLimitRequest.ProtoReflect.Descriptor instead.
 func (*SetDeviceLimitRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{28}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *SetDeviceLimitRequest) GetDeviceKey() string {
@@ -1509,7 +1677,7 @@ type SetDeviceLimitResponse struct {
 
 func (x *SetDeviceLimitResponse) Reset() {
 	*x = SetDeviceLimitResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[29]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1521,7 +1689,7 @@ func (x *SetDeviceLimitResponse) String() string {
 func (*SetDeviceLimitResponse) ProtoMessage() {}
 
 func (x *SetDeviceLimitResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[29]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1534,7 +1702,7 @@ func (x *SetDeviceLimitResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetDeviceLimitResponse.ProtoReflect.Descriptor instead.
 func (*SetDeviceLimitResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{29}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{33}
 }
 
 type ClearDeviceLimitRequest struct {
@@ -1546,7 +1714,7 @@ type ClearDeviceLimitRequest struct {
 
 func (x *ClearDeviceLimitRequest) Reset() {
 	*x = ClearDeviceLimitRequest{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[30]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1558,7 +1726,7 @@ func (x *ClearDeviceLimitRequest) String() string {
 func (*ClearDeviceLimitRequest) ProtoMessage() {}
 
 func (x *ClearDeviceLimitRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[30]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1571,7 +1739,7 @@ func (x *ClearDeviceLimitRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClearDeviceLimitRequest.ProtoReflect.Descriptor instead.
 func (*ClearDeviceLimitRequest) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{30}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *ClearDeviceLimitRequest) GetDeviceKey() string {
@@ -1589,7 +1757,7 @@ type ClearDeviceLimitResponse struct {
 
 func (x *ClearDeviceLimitResponse) Reset() {
 	*x = ClearDeviceLimitResponse{}
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[31]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1601,7 +1769,7 @@ func (x *ClearDeviceLimitResponse) String() string {
 func (*ClearDeviceLimitResponse) ProtoMessage() {}
 
 func (x *ClearDeviceLimitResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[31]
+	mi := &file_app_ratelimit_api_ratelimit_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1614,14 +1782,21 @@ func (x *ClearDeviceLimitResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClearDeviceLimitResponse.ProtoReflect.Descriptor instead.
 func (*ClearDeviceLimitResponse) Descriptor() ([]byte, []int) {
-	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{31}
+	return file_app_ratelimit_api_ratelimit_proto_rawDescGZIP(), []int{35}
 }
 
 var File_app_ratelimit_api_ratelimit_proto protoreflect.FileDescriptor
 
 const file_app_ratelimit_api_ratelimit_proto_rawDesc = "" +
 	"\n" +
-	"!app/ratelimit/api/ratelimit.proto\x12\fratelimit.v1\"1\n" +
+	"!app/ratelimit/api/ratelimit.proto\x12\fratelimit.v1\"8\n" +
+	"\"ClearUserConnOverrideLimitsRequest\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"?\n" +
+	"#ClearUserConnOverrideLimitsResponse\x12\x18\n" +
+	"\acleared\x18\x01 \x01(\rR\acleared\"9\n" +
+	"#ClearUserDefaultPerConnLimitRequest\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"&\n" +
+	"$ClearUserDefaultPerConnLimitResponse\"1\n" +
 	"\x1bClearUserEgressCacheRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"8\n" +
 	"\x1cClearUserEgressCacheResponse\x12\x18\n" +
@@ -1710,13 +1885,14 @@ const file_app_ratelimit_api_ratelimit_proto_rawDesc = "" +
 	"\x17ClearDeviceLimitRequest\x12\x1d\n" +
 	"\n" +
 	"device_key\x18\x01 \x01(\tR\tdeviceKey\"\x1a\n" +
-	"\x18ClearDeviceLimitResponse2\xd6\v\n" +
+	"\x18ClearDeviceLimitResponse2\xdf\x0e\n" +
 	"\x10RateLimitService\x12\x7f\n" +
 	"\x1aSetUserDefaultPerConnLimit\x12/.ratelimit.v1.SetUserDefaultPerConnLimitRequest\x1a0.ratelimit.v1.SetUserDefaultPerConnLimitResponse\x12j\n" +
 	"\x13ListUserConnections\x12(.ratelimit.v1.ListUserConnectionsRequest\x1a).ratelimit.v1.ListUserConnectionsResponse\x12g\n" +
 	"\x12SetConnectionLimit\x12'.ratelimit.v1.SetConnectionLimitRequest\x1a(.ratelimit.v1.SetConnectionLimitResponse\x12m\n" +
 	"\x14ClearConnectionLimit\x12).ratelimit.v1.ClearConnectionLimitRequest\x1a*.ratelimit.v1.ClearConnectionLimitResponse\x12y\n" +
-	"\x18GetActiveDevicesSnapshot\x12-.ratelimit.v1.GetActiveDevicesSnapshotRequest\x1a..ratelimit.v1.GetActiveDevicesSnapshotResponse\x12^\n" +
+	"\x18GetActiveDevicesSnapshot\x12-.ratelimit.v1.GetActiveDevicesSnapshotRequest\x1a..ratelimit.v1.GetActiveDevicesSnapshotResponse\x12z\n" +
+	"\x19PeekActiveDevicesSnapshot\x12-.ratelimit.v1.GetActiveDevicesSnapshotRequest\x1a..ratelimit.v1.GetActiveDevicesSnapshotResponse\x12^\n" +
 	"\x0fListUserDevices\x12$.ratelimit.v1.ListUserDevicesRequest\x1a%.ratelimit.v1.ListUserDevicesResponse\x12[\n" +
 	"\x0eSetDeviceLimit\x12#.ratelimit.v1.SetDeviceLimitRequest\x1a$.ratelimit.v1.SetDeviceLimitResponse\x12a\n" +
 	"\x10ClearDeviceLimit\x12%.ratelimit.v1.ClearDeviceLimitRequest\x1a&.ratelimit.v1.ClearDeviceLimitResponse\x12d\n" +
@@ -1728,7 +1904,9 @@ const file_app_ratelimit_api_ratelimit_proto_rawDesc = "" +
 	"GetKeyMode\x12\x1f.ratelimit.v1.GetKeyModeRequest\x1a .ratelimit.v1.GetKeyModeResponse\x12I\n" +
 	"\bSetGrace\x12\x1d.ratelimit.v1.SetGraceRequest\x1a\x1e.ratelimit.v1.SetGraceResponse\x12I\n" +
 	"\bGetGrace\x12\x1d.ratelimit.v1.GetGraceRequest\x1a\x1e.ratelimit.v1.GetGraceResponse\x12m\n" +
-	"\x14ClearUserEgressCache\x12).ratelimit.v1.ClearUserEgressCacheRequest\x1a*.ratelimit.v1.ClearUserEgressCacheResponseB9Z7github.com/xtls/xray-core/app/ratelimit/api;ratelimitpbb\x06proto3"
+	"\x14ClearUserEgressCache\x12).ratelimit.v1.ClearUserEgressCacheRequest\x1a*.ratelimit.v1.ClearUserEgressCacheResponse\x12\x85\x01\n" +
+	"\x1cClearUserDefaultPerConnLimit\x121.ratelimit.v1.ClearUserDefaultPerConnLimitRequest\x1a2.ratelimit.v1.ClearUserDefaultPerConnLimitResponse\x12\x82\x01\n" +
+	"\x1bClearUserConnOverrideLimits\x120.ratelimit.v1.ClearUserConnOverrideLimitsRequest\x1a1.ratelimit.v1.ClearUserConnOverrideLimitsResponseB9Z7github.com/xtls/xray-core/app/ratelimit/api;ratelimitpbb\x06proto3"
 
 var (
 	file_app_ratelimit_api_ratelimit_proto_rawDescOnce sync.Once
@@ -1743,80 +1921,90 @@ func file_app_ratelimit_api_ratelimit_proto_rawDescGZIP() []byte {
 }
 
 var file_app_ratelimit_api_ratelimit_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_app_ratelimit_api_ratelimit_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
+var file_app_ratelimit_api_ratelimit_proto_msgTypes = make([]protoimpl.MessageInfo, 36)
 var file_app_ratelimit_api_ratelimit_proto_goTypes = []any{
-	(SetKeyModeRequest_Mode)(0),                // 0: ratelimit.v1.SetKeyModeRequest.Mode
-	(*ClearUserEgressCacheRequest)(nil),        // 1: ratelimit.v1.ClearUserEgressCacheRequest
-	(*ClearUserEgressCacheResponse)(nil),       // 2: ratelimit.v1.ClearUserEgressCacheResponse
-	(*SetGraceRequest)(nil),                    // 3: ratelimit.v1.SetGraceRequest
-	(*SetGraceResponse)(nil),                   // 4: ratelimit.v1.SetGraceResponse
-	(*GetGraceRequest)(nil),                    // 5: ratelimit.v1.GetGraceRequest
-	(*GetGraceResponse)(nil),                   // 6: ratelimit.v1.GetGraceResponse
-	(*SetKeyModeRequest)(nil),                  // 7: ratelimit.v1.SetKeyModeRequest
-	(*SetKeyModeResponse)(nil),                 // 8: ratelimit.v1.SetKeyModeResponse
-	(*GetKeyModeRequest)(nil),                  // 9: ratelimit.v1.GetKeyModeRequest
-	(*GetKeyModeResponse)(nil),                 // 10: ratelimit.v1.GetKeyModeResponse
-	(*GetUserStatsRequest)(nil),                // 11: ratelimit.v1.GetUserStatsRequest
-	(*GetUserStatsResponse)(nil),               // 12: ratelimit.v1.GetUserStatsResponse
-	(*SetUserTotalLimitRequest)(nil),           // 13: ratelimit.v1.SetUserTotalLimitRequest
-	(*SetUserTotalLimitResponse)(nil),          // 14: ratelimit.v1.SetUserTotalLimitResponse
-	(*ConnectionInfo)(nil),                     // 15: ratelimit.v1.ConnectionInfo
-	(*SetUserDefaultPerConnLimitRequest)(nil),  // 16: ratelimit.v1.SetUserDefaultPerConnLimitRequest
-	(*SetUserDefaultPerConnLimitResponse)(nil), // 17: ratelimit.v1.SetUserDefaultPerConnLimitResponse
-	(*ListUserConnectionsRequest)(nil),         // 18: ratelimit.v1.ListUserConnectionsRequest
-	(*ListUserConnectionsResponse)(nil),        // 19: ratelimit.v1.ListUserConnectionsResponse
-	(*SetConnectionLimitRequest)(nil),          // 20: ratelimit.v1.SetConnectionLimitRequest
-	(*SetConnectionLimitResponse)(nil),         // 21: ratelimit.v1.SetConnectionLimitResponse
-	(*ClearConnectionLimitRequest)(nil),        // 22: ratelimit.v1.ClearConnectionLimitRequest
-	(*ClearConnectionLimitResponse)(nil),       // 23: ratelimit.v1.ClearConnectionLimitResponse
-	(*DeviceInfo)(nil),                         // 24: ratelimit.v1.DeviceInfo
-	(*GetActiveDevicesSnapshotRequest)(nil),    // 25: ratelimit.v1.GetActiveDevicesSnapshotRequest
-	(*GetActiveDevicesSnapshotResponse)(nil),   // 26: ratelimit.v1.GetActiveDevicesSnapshotResponse
-	(*ListUserDevicesRequest)(nil),             // 27: ratelimit.v1.ListUserDevicesRequest
-	(*ListUserDevicesResponse)(nil),            // 28: ratelimit.v1.ListUserDevicesResponse
-	(*SetDeviceLimitRequest)(nil),              // 29: ratelimit.v1.SetDeviceLimitRequest
-	(*SetDeviceLimitResponse)(nil),             // 30: ratelimit.v1.SetDeviceLimitResponse
-	(*ClearDeviceLimitRequest)(nil),            // 31: ratelimit.v1.ClearDeviceLimitRequest
-	(*ClearDeviceLimitResponse)(nil),           // 32: ratelimit.v1.ClearDeviceLimitResponse
+	(SetKeyModeRequest_Mode)(0),                  // 0: ratelimit.v1.SetKeyModeRequest.Mode
+	(*ClearUserConnOverrideLimitsRequest)(nil),   // 1: ratelimit.v1.ClearUserConnOverrideLimitsRequest
+	(*ClearUserConnOverrideLimitsResponse)(nil),  // 2: ratelimit.v1.ClearUserConnOverrideLimitsResponse
+	(*ClearUserDefaultPerConnLimitRequest)(nil),  // 3: ratelimit.v1.ClearUserDefaultPerConnLimitRequest
+	(*ClearUserDefaultPerConnLimitResponse)(nil), // 4: ratelimit.v1.ClearUserDefaultPerConnLimitResponse
+	(*ClearUserEgressCacheRequest)(nil),          // 5: ratelimit.v1.ClearUserEgressCacheRequest
+	(*ClearUserEgressCacheResponse)(nil),         // 6: ratelimit.v1.ClearUserEgressCacheResponse
+	(*SetGraceRequest)(nil),                      // 7: ratelimit.v1.SetGraceRequest
+	(*SetGraceResponse)(nil),                     // 8: ratelimit.v1.SetGraceResponse
+	(*GetGraceRequest)(nil),                      // 9: ratelimit.v1.GetGraceRequest
+	(*GetGraceResponse)(nil),                     // 10: ratelimit.v1.GetGraceResponse
+	(*SetKeyModeRequest)(nil),                    // 11: ratelimit.v1.SetKeyModeRequest
+	(*SetKeyModeResponse)(nil),                   // 12: ratelimit.v1.SetKeyModeResponse
+	(*GetKeyModeRequest)(nil),                    // 13: ratelimit.v1.GetKeyModeRequest
+	(*GetKeyModeResponse)(nil),                   // 14: ratelimit.v1.GetKeyModeResponse
+	(*GetUserStatsRequest)(nil),                  // 15: ratelimit.v1.GetUserStatsRequest
+	(*GetUserStatsResponse)(nil),                 // 16: ratelimit.v1.GetUserStatsResponse
+	(*SetUserTotalLimitRequest)(nil),             // 17: ratelimit.v1.SetUserTotalLimitRequest
+	(*SetUserTotalLimitResponse)(nil),            // 18: ratelimit.v1.SetUserTotalLimitResponse
+	(*ConnectionInfo)(nil),                       // 19: ratelimit.v1.ConnectionInfo
+	(*SetUserDefaultPerConnLimitRequest)(nil),    // 20: ratelimit.v1.SetUserDefaultPerConnLimitRequest
+	(*SetUserDefaultPerConnLimitResponse)(nil),   // 21: ratelimit.v1.SetUserDefaultPerConnLimitResponse
+	(*ListUserConnectionsRequest)(nil),           // 22: ratelimit.v1.ListUserConnectionsRequest
+	(*ListUserConnectionsResponse)(nil),          // 23: ratelimit.v1.ListUserConnectionsResponse
+	(*SetConnectionLimitRequest)(nil),            // 24: ratelimit.v1.SetConnectionLimitRequest
+	(*SetConnectionLimitResponse)(nil),           // 25: ratelimit.v1.SetConnectionLimitResponse
+	(*ClearConnectionLimitRequest)(nil),          // 26: ratelimit.v1.ClearConnectionLimitRequest
+	(*ClearConnectionLimitResponse)(nil),         // 27: ratelimit.v1.ClearConnectionLimitResponse
+	(*DeviceInfo)(nil),                           // 28: ratelimit.v1.DeviceInfo
+	(*GetActiveDevicesSnapshotRequest)(nil),      // 29: ratelimit.v1.GetActiveDevicesSnapshotRequest
+	(*GetActiveDevicesSnapshotResponse)(nil),     // 30: ratelimit.v1.GetActiveDevicesSnapshotResponse
+	(*ListUserDevicesRequest)(nil),               // 31: ratelimit.v1.ListUserDevicesRequest
+	(*ListUserDevicesResponse)(nil),              // 32: ratelimit.v1.ListUserDevicesResponse
+	(*SetDeviceLimitRequest)(nil),                // 33: ratelimit.v1.SetDeviceLimitRequest
+	(*SetDeviceLimitResponse)(nil),               // 34: ratelimit.v1.SetDeviceLimitResponse
+	(*ClearDeviceLimitRequest)(nil),              // 35: ratelimit.v1.ClearDeviceLimitRequest
+	(*ClearDeviceLimitResponse)(nil),             // 36: ratelimit.v1.ClearDeviceLimitResponse
 }
 var file_app_ratelimit_api_ratelimit_proto_depIdxs = []int32{
 	0,  // 0: ratelimit.v1.SetKeyModeRequest.mode:type_name -> ratelimit.v1.SetKeyModeRequest.Mode
 	0,  // 1: ratelimit.v1.GetKeyModeResponse.mode:type_name -> ratelimit.v1.SetKeyModeRequest.Mode
-	15, // 2: ratelimit.v1.ListUserConnectionsResponse.connections:type_name -> ratelimit.v1.ConnectionInfo
-	24, // 3: ratelimit.v1.GetActiveDevicesSnapshotResponse.devices:type_name -> ratelimit.v1.DeviceInfo
-	24, // 4: ratelimit.v1.ListUserDevicesResponse.devices:type_name -> ratelimit.v1.DeviceInfo
-	16, // 5: ratelimit.v1.RateLimitService.SetUserDefaultPerConnLimit:input_type -> ratelimit.v1.SetUserDefaultPerConnLimitRequest
-	18, // 6: ratelimit.v1.RateLimitService.ListUserConnections:input_type -> ratelimit.v1.ListUserConnectionsRequest
-	20, // 7: ratelimit.v1.RateLimitService.SetConnectionLimit:input_type -> ratelimit.v1.SetConnectionLimitRequest
-	22, // 8: ratelimit.v1.RateLimitService.ClearConnectionLimit:input_type -> ratelimit.v1.ClearConnectionLimitRequest
-	25, // 9: ratelimit.v1.RateLimitService.GetActiveDevicesSnapshot:input_type -> ratelimit.v1.GetActiveDevicesSnapshotRequest
-	27, // 10: ratelimit.v1.RateLimitService.ListUserDevices:input_type -> ratelimit.v1.ListUserDevicesRequest
-	29, // 11: ratelimit.v1.RateLimitService.SetDeviceLimit:input_type -> ratelimit.v1.SetDeviceLimitRequest
-	31, // 12: ratelimit.v1.RateLimitService.ClearDeviceLimit:input_type -> ratelimit.v1.ClearDeviceLimitRequest
-	13, // 13: ratelimit.v1.RateLimitService.SetUserTotalLimit:input_type -> ratelimit.v1.SetUserTotalLimitRequest
-	11, // 14: ratelimit.v1.RateLimitService.GetUserStats:input_type -> ratelimit.v1.GetUserStatsRequest
-	7,  // 15: ratelimit.v1.RateLimitService.SetKeyMode:input_type -> ratelimit.v1.SetKeyModeRequest
-	9,  // 16: ratelimit.v1.RateLimitService.GetKeyMode:input_type -> ratelimit.v1.GetKeyModeRequest
-	3,  // 17: ratelimit.v1.RateLimitService.SetGrace:input_type -> ratelimit.v1.SetGraceRequest
-	5,  // 18: ratelimit.v1.RateLimitService.GetGrace:input_type -> ratelimit.v1.GetGraceRequest
-	1,  // 19: ratelimit.v1.RateLimitService.ClearUserEgressCache:input_type -> ratelimit.v1.ClearUserEgressCacheRequest
-	17, // 20: ratelimit.v1.RateLimitService.SetUserDefaultPerConnLimit:output_type -> ratelimit.v1.SetUserDefaultPerConnLimitResponse
-	19, // 21: ratelimit.v1.RateLimitService.ListUserConnections:output_type -> ratelimit.v1.ListUserConnectionsResponse
-	21, // 22: ratelimit.v1.RateLimitService.SetConnectionLimit:output_type -> ratelimit.v1.SetConnectionLimitResponse
-	23, // 23: ratelimit.v1.RateLimitService.ClearConnectionLimit:output_type -> ratelimit.v1.ClearConnectionLimitResponse
-	26, // 24: ratelimit.v1.RateLimitService.GetActiveDevicesSnapshot:output_type -> ratelimit.v1.GetActiveDevicesSnapshotResponse
-	28, // 25: ratelimit.v1.RateLimitService.ListUserDevices:output_type -> ratelimit.v1.ListUserDevicesResponse
-	30, // 26: ratelimit.v1.RateLimitService.SetDeviceLimit:output_type -> ratelimit.v1.SetDeviceLimitResponse
-	32, // 27: ratelimit.v1.RateLimitService.ClearDeviceLimit:output_type -> ratelimit.v1.ClearDeviceLimitResponse
-	14, // 28: ratelimit.v1.RateLimitService.SetUserTotalLimit:output_type -> ratelimit.v1.SetUserTotalLimitResponse
-	12, // 29: ratelimit.v1.RateLimitService.GetUserStats:output_type -> ratelimit.v1.GetUserStatsResponse
-	8,  // 30: ratelimit.v1.RateLimitService.SetKeyMode:output_type -> ratelimit.v1.SetKeyModeResponse
-	10, // 31: ratelimit.v1.RateLimitService.GetKeyMode:output_type -> ratelimit.v1.GetKeyModeResponse
-	4,  // 32: ratelimit.v1.RateLimitService.SetGrace:output_type -> ratelimit.v1.SetGraceResponse
-	6,  // 33: ratelimit.v1.RateLimitService.GetGrace:output_type -> ratelimit.v1.GetGraceResponse
-	2,  // 34: ratelimit.v1.RateLimitService.ClearUserEgressCache:output_type -> ratelimit.v1.ClearUserEgressCacheResponse
-	20, // [20:35] is the sub-list for method output_type
-	5,  // [5:20] is the sub-list for method input_type
+	19, // 2: ratelimit.v1.ListUserConnectionsResponse.connections:type_name -> ratelimit.v1.ConnectionInfo
+	28, // 3: ratelimit.v1.GetActiveDevicesSnapshotResponse.devices:type_name -> ratelimit.v1.DeviceInfo
+	28, // 4: ratelimit.v1.ListUserDevicesResponse.devices:type_name -> ratelimit.v1.DeviceInfo
+	20, // 5: ratelimit.v1.RateLimitService.SetUserDefaultPerConnLimit:input_type -> ratelimit.v1.SetUserDefaultPerConnLimitRequest
+	22, // 6: ratelimit.v1.RateLimitService.ListUserConnections:input_type -> ratelimit.v1.ListUserConnectionsRequest
+	24, // 7: ratelimit.v1.RateLimitService.SetConnectionLimit:input_type -> ratelimit.v1.SetConnectionLimitRequest
+	26, // 8: ratelimit.v1.RateLimitService.ClearConnectionLimit:input_type -> ratelimit.v1.ClearConnectionLimitRequest
+	29, // 9: ratelimit.v1.RateLimitService.GetActiveDevicesSnapshot:input_type -> ratelimit.v1.GetActiveDevicesSnapshotRequest
+	29, // 10: ratelimit.v1.RateLimitService.PeekActiveDevicesSnapshot:input_type -> ratelimit.v1.GetActiveDevicesSnapshotRequest
+	31, // 11: ratelimit.v1.RateLimitService.ListUserDevices:input_type -> ratelimit.v1.ListUserDevicesRequest
+	33, // 12: ratelimit.v1.RateLimitService.SetDeviceLimit:input_type -> ratelimit.v1.SetDeviceLimitRequest
+	35, // 13: ratelimit.v1.RateLimitService.ClearDeviceLimit:input_type -> ratelimit.v1.ClearDeviceLimitRequest
+	17, // 14: ratelimit.v1.RateLimitService.SetUserTotalLimit:input_type -> ratelimit.v1.SetUserTotalLimitRequest
+	15, // 15: ratelimit.v1.RateLimitService.GetUserStats:input_type -> ratelimit.v1.GetUserStatsRequest
+	11, // 16: ratelimit.v1.RateLimitService.SetKeyMode:input_type -> ratelimit.v1.SetKeyModeRequest
+	13, // 17: ratelimit.v1.RateLimitService.GetKeyMode:input_type -> ratelimit.v1.GetKeyModeRequest
+	7,  // 18: ratelimit.v1.RateLimitService.SetGrace:input_type -> ratelimit.v1.SetGraceRequest
+	9,  // 19: ratelimit.v1.RateLimitService.GetGrace:input_type -> ratelimit.v1.GetGraceRequest
+	5,  // 20: ratelimit.v1.RateLimitService.ClearUserEgressCache:input_type -> ratelimit.v1.ClearUserEgressCacheRequest
+	3,  // 21: ratelimit.v1.RateLimitService.ClearUserDefaultPerConnLimit:input_type -> ratelimit.v1.ClearUserDefaultPerConnLimitRequest
+	1,  // 22: ratelimit.v1.RateLimitService.ClearUserConnOverrideLimits:input_type -> ratelimit.v1.ClearUserConnOverrideLimitsRequest
+	21, // 23: ratelimit.v1.RateLimitService.SetUserDefaultPerConnLimit:output_type -> ratelimit.v1.SetUserDefaultPerConnLimitResponse
+	23, // 24: ratelimit.v1.RateLimitService.ListUserConnections:output_type -> ratelimit.v1.ListUserConnectionsResponse
+	25, // 25: ratelimit.v1.RateLimitService.SetConnectionLimit:output_type -> ratelimit.v1.SetConnectionLimitResponse
+	27, // 26: ratelimit.v1.RateLimitService.ClearConnectionLimit:output_type -> ratelimit.v1.ClearConnectionLimitResponse
+	30, // 27: ratelimit.v1.RateLimitService.GetActiveDevicesSnapshot:output_type -> ratelimit.v1.GetActiveDevicesSnapshotResponse
+	30, // 28: ratelimit.v1.RateLimitService.PeekActiveDevicesSnapshot:output_type -> ratelimit.v1.GetActiveDevicesSnapshotResponse
+	32, // 29: ratelimit.v1.RateLimitService.ListUserDevices:output_type -> ratelimit.v1.ListUserDevicesResponse
+	34, // 30: ratelimit.v1.RateLimitService.SetDeviceLimit:output_type -> ratelimit.v1.SetDeviceLimitResponse
+	36, // 31: ratelimit.v1.RateLimitService.ClearDeviceLimit:output_type -> ratelimit.v1.ClearDeviceLimitResponse
+	18, // 32: ratelimit.v1.RateLimitService.SetUserTotalLimit:output_type -> ratelimit.v1.SetUserTotalLimitResponse
+	16, // 33: ratelimit.v1.RateLimitService.GetUserStats:output_type -> ratelimit.v1.GetUserStatsResponse
+	12, // 34: ratelimit.v1.RateLimitService.SetKeyMode:output_type -> ratelimit.v1.SetKeyModeResponse
+	14, // 35: ratelimit.v1.RateLimitService.GetKeyMode:output_type -> ratelimit.v1.GetKeyModeResponse
+	8,  // 36: ratelimit.v1.RateLimitService.SetGrace:output_type -> ratelimit.v1.SetGraceResponse
+	10, // 37: ratelimit.v1.RateLimitService.GetGrace:output_type -> ratelimit.v1.GetGraceResponse
+	6,  // 38: ratelimit.v1.RateLimitService.ClearUserEgressCache:output_type -> ratelimit.v1.ClearUserEgressCacheResponse
+	4,  // 39: ratelimit.v1.RateLimitService.ClearUserDefaultPerConnLimit:output_type -> ratelimit.v1.ClearUserDefaultPerConnLimitResponse
+	2,  // 40: ratelimit.v1.RateLimitService.ClearUserConnOverrideLimits:output_type -> ratelimit.v1.ClearUserConnOverrideLimitsResponse
+	23, // [23:41] is the sub-list for method output_type
+	5,  // [5:23] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name
@@ -1833,7 +2021,7 @@ func file_app_ratelimit_api_ratelimit_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_app_ratelimit_api_ratelimit_proto_rawDesc), len(file_app_ratelimit_api_ratelimit_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   32,
+			NumMessages:   36,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

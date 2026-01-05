@@ -12,7 +12,7 @@ const (
 var keyMode atomic.Int32
 
 func init() {
-	keyMode.Store(int32(KeyModeDevice)) // дефолт — как было
+	keyMode.Store(int32(KeyModeUUID)) // дефолт — как было
 }
 
 func SetKeyMode(m KeyMode) { keyMode.Store(int32(m)) }

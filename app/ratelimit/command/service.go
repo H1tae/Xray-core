@@ -116,6 +116,17 @@ func (s *Service) GetActiveDevicesSnapshot(ctx context.Context, req *ratelimitpb
 	}
 
 	for _, d := range devs {
+		// Очищаем статистику атомарно в registry (где живут ConnInfo)
+		var rx, tx uint64
+		if ci := ratelimit.Global.Get(d.ConnID); ci != nil {
+			rx = ci.RxBytes.Swap(0)
+			tx = ci.TxBytes.Swap(0)
+		} else {
+			// если ConnInfo уже удалён, отдаём то, что было в снапшоте
+			rx = d.RxBytes
+			tx = d.TxBytes
+		}
+
 		resp.Devices = append(resp.Devices, &ratelimitpb.DeviceInfo{
 			Uuid:          d.UUID,
 			SrcIp:         d.SrcIP,
@@ -124,10 +135,46 @@ func (s *Service) GetActiveDevicesSnapshot(ctx context.Context, req *ratelimitpb
 			RefCount:      d.RefCount,
 			StartedAtUnix: uint64(d.StartedAt.Unix()),
 			LastSeenUnix:  uint64(d.LastSeen.Unix()),
-			RxBytes:       d.RxBytes,
-			TxBytes:       d.TxBytes,
+			RxBytes:       rx,
+			TxBytes:       tx,
 		})
 	}
+
+	return resp, nil
+}
+
+func (s *Service) PeekActiveDevicesSnapshot(ctx context.Context, req *ratelimitpb.GetActiveDevicesSnapshotRequest) (*ratelimitpb.GetActiveDevicesSnapshotResponse, error) {
+	devs := ratelimit.ListDevicesAll()
+
+	resp := &ratelimitpb.GetActiveDevicesSnapshotResponse{
+		Devices: make([]*ratelimitpb.DeviceInfo, 0, len(devs)),
+	}
+
+	for _, d := range devs {
+		// НЕ очищаем: читаем текущие значения через Load()
+		var rx, tx uint64
+		if ci := ratelimit.Global.Get(d.ConnID); ci != nil {
+			rx = ci.RxBytes.Load()
+			tx = ci.TxBytes.Load()
+		} else {
+			// если ConnInfo уже удалён — берём что было в снапшоте
+			rx = d.RxBytes
+			tx = d.TxBytes
+		}
+
+		resp.Devices = append(resp.Devices, &ratelimitpb.DeviceInfo{
+			Uuid:          d.UUID,
+			SrcIp:         d.SrcIP,
+			DeviceKey:     d.DeviceKey,
+			ConnId:        uint64(d.ConnID),
+			RefCount:      d.RefCount,
+			StartedAtUnix: uint64(d.StartedAt.Unix()),
+			LastSeenUnix:  uint64(d.LastSeen.Unix()),
+			RxBytes:       rx,
+			TxBytes:       tx,
+		})
+	}
+
 	return resp, nil
 }
 
@@ -181,7 +228,36 @@ func (s *Service) ListUserConnections(ctx context.Context, req *ratelimitpb.List
 	return resp, nil
 }
 
-// Deprecated
+func (s *Service) ClearUserDefaultPerConnLimit(
+	ctx context.Context,
+	req *ratelimitpb.ClearUserDefaultPerConnLimitRequest,
+) (*ratelimitpb.ClearUserDefaultPerConnLimitResponse, error) {
+
+	if req.Uuid == "" {
+		return nil, errors.New("uuid is empty")
+	}
+
+	ratelimit.Limits.ClearUserDefault(req.Uuid)
+
+	return &ratelimitpb.ClearUserDefaultPerConnLimitResponse{}, nil
+}
+
+func (s *Service) ClearUserConnOverrideLimits(
+	ctx context.Context,
+	req *ratelimitpb.ClearUserConnOverrideLimitsRequest,
+) (*ratelimitpb.ClearUserConnOverrideLimitsResponse, error) {
+
+	if req.Uuid == "" {
+		return nil, errors.New("uuid is empty")
+	}
+
+	cleared := ratelimit.ClearUserOverride(req.Uuid)
+
+	return &ratelimitpb.ClearUserConnOverrideLimitsResponse{
+		Cleared: uint32(cleared),
+	}, nil
+}
+
 func (s *Service) SetUserDefaultPerConnLimit(ctx context.Context, req *ratelimitpb.SetUserDefaultPerConnLimitRequest) (*ratelimitpb.SetUserDefaultPerConnLimitResponse, error) {
 	// Минимальная валидация
 	if req.Uuid == "" {
@@ -192,7 +268,6 @@ func (s *Service) SetUserDefaultPerConnLimit(ctx context.Context, req *ratelimit
 	return &ratelimitpb.SetUserDefaultPerConnLimitResponse{}, nil
 }
 
-// Deprecated
 func (s *Service) SetConnectionLimit(ctx context.Context, req *ratelimitpb.SetConnectionLimitRequest) (*ratelimitpb.SetConnectionLimitResponse, error) {
 	if req.ConnId == 0 {
 		return nil, errors.New("conn_id is 0")
@@ -201,7 +276,6 @@ func (s *Service) SetConnectionLimit(ctx context.Context, req *ratelimitpb.SetCo
 	return &ratelimitpb.SetConnectionLimitResponse{}, nil
 }
 
-// Deprecated
 func (s *Service) ClearConnectionLimit(ctx context.Context, req *ratelimitpb.ClearConnectionLimitRequest) (*ratelimitpb.ClearConnectionLimitResponse, error) {
 	if req.ConnId == 0 {
 		return nil, errors.New("conn_id is 0")
