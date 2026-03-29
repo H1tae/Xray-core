@@ -1,5 +1,5 @@
 {
-  "log": { "loglevel": "warning" },
+  "log": { "loglevel": "debug" },
 
   "inbounds": [
     {
@@ -23,7 +23,6 @@
             "users": [
               {
                 "id": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb",
-                "email": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb",
                 "encryption": "none"
               }
             ]
@@ -32,7 +31,13 @@
       },
       "streamSettings": {
         "network": "tcp",
-        "security": "none"
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "www.cloudflare.com",
+          "publicKey": "B5z5RXa0uZtKV_gyVdqHHsDJicIzEiyOFO3rpG0MB1s",
+          "shortId": "906f47df46efecc5",
+          "fingerprint": "chrome"
+        }
       }
     }
   ]

@@ -19,7 +19,12 @@
       "protocol": "vless",
 
       "settings": {
-        "clients": [],
+        "clients": [
+          {
+            "id": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb",
+            "email": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb"
+          }
+        ],
         "decryption": "none"
       },
 
@@ -31,7 +36,7 @@
           "dest": "www.cloudflare.com:443",
           "xver": 0,
           "serverNames": ["www.cloudflare.com"],
-          "privateKey": "PASTE_YOUR_X25519_PRIVATE_KEY_HERE",
+          "privateKey": "MFnEfjedCxNBpytmR_7NeFTFXDivswSecmZ9--chMUc",
           "shortIds": ["906f47df46efecc5"]
         }
       },
