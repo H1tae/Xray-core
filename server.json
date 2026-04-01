@@ -1,6 +1,10 @@
 {
   "log": { "loglevel": "warning" },
 
+  "ratelimit": {
+    "graceSeconds": 15
+  },
+
   "api": {
     "tag": "api",
     "listen": "127.0.0.1:10085",

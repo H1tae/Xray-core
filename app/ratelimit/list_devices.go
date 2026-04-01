@@ -28,7 +28,7 @@ func ListDevicesAll() []DeviceSnapshot {
 			continue
 		}
 
-		// key = uuid|srcIP
+		// key = uuid|srcIP or plain uuid in uuid-only mode
 		uuid := key
 		srcIP := ""
 		if i := strings.IndexByte(key, '|'); i >= 0 {
@@ -78,11 +78,14 @@ func ListDevicesByUUID(uuid string) []DeviceSnapshot {
 		if e == nil {
 			continue
 		}
-		if !strings.HasPrefix(key, prefix) {
+		if key != uuid && !strings.HasPrefix(key, prefix) {
 			continue
 		}
 
-		srcIP := strings.TrimPrefix(key, prefix)
+		srcIP := ""
+		if strings.HasPrefix(key, prefix) {
+			srcIP = strings.TrimPrefix(key, prefix)
+		}
 
 		// Достаём counters из Global по connID (если есть)
 		var rx, tx uint64

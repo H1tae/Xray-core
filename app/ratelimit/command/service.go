@@ -178,6 +178,70 @@ func (s *Service) PeekActiveDevicesSnapshot(ctx context.Context, req *ratelimitp
 	return resp, nil
 }
 
+func (s *Service) ListUserDevices(ctx context.Context, req *ratelimitpb.ListUserDevicesRequest) (*ratelimitpb.ListUserDevicesResponse, error) {
+	if req.Uuid == "" {
+		return nil, errors.New("uuid is empty")
+	}
+
+	devs := ratelimit.ListDevicesByUUID(req.Uuid)
+	resp := &ratelimitpb.ListUserDevicesResponse{
+		Devices: make([]*ratelimitpb.DeviceInfo, 0, len(devs)),
+	}
+
+	for _, d := range devs {
+		var rx, tx uint64
+		if ci := ratelimit.Global.Get(d.ConnID); ci != nil {
+			rx = ci.RxBytes.Load()
+			tx = ci.TxBytes.Load()
+		} else {
+			rx = d.RxBytes
+			tx = d.TxBytes
+		}
+
+		resp.Devices = append(resp.Devices, &ratelimitpb.DeviceInfo{
+			Uuid:          d.UUID,
+			SrcIp:         d.SrcIP,
+			DeviceKey:     d.DeviceKey,
+			ConnId:        uint64(d.ConnID),
+			RefCount:      d.RefCount,
+			StartedAtUnix: uint64(d.StartedAt.Unix()),
+			LastSeenUnix:  uint64(d.LastSeen.Unix()),
+			RxBytes:       rx,
+			TxBytes:       tx,
+		})
+	}
+
+	return resp, nil
+}
+
+func (s *Service) SetDeviceLimit(ctx context.Context, req *ratelimitpb.SetDeviceLimitRequest) (*ratelimitpb.SetDeviceLimitResponse, error) {
+	if req.DeviceKey == "" {
+		return nil, errors.New("device_key is empty")
+	}
+
+	connID, ok := ratelimit.DeviceConnID(req.DeviceKey)
+	if !ok {
+		return nil, errors.New("device_key not found: ", req.DeviceKey)
+	}
+
+	ratelimit.Limits.SetConnLimit(connID, req.DownBps, req.UpBps)
+	return &ratelimitpb.SetDeviceLimitResponse{}, nil
+}
+
+func (s *Service) ClearDeviceLimit(ctx context.Context, req *ratelimitpb.ClearDeviceLimitRequest) (*ratelimitpb.ClearDeviceLimitResponse, error) {
+	if req.DeviceKey == "" {
+		return nil, errors.New("device_key is empty")
+	}
+
+	connID, ok := ratelimit.DeviceConnID(req.DeviceKey)
+	if !ok {
+		return nil, errors.New("device_key not found: ", req.DeviceKey)
+	}
+
+	ratelimit.Limits.ClearConnLimit(connID)
+	return &ratelimitpb.ClearDeviceLimitResponse{}, nil
+}
+
 func (s *Service) SetUserTotalLimit(
 	ctx context.Context,
 	req *ratelimitpb.SetUserTotalLimitRequest,
@@ -290,6 +354,8 @@ func (s *Service) ClearConnectionLimit(ctx context.Context, req *ratelimitpb.Cle
 func New(ctx context.Context, cfg *Config) (commander.Service, error) {
 	mode := strings.ToLower(strings.TrimSpace(cfg.GetKeyMode()))
 	switch mode {
+	case "":
+		// Keep settings already applied from top-level ratelimit config.
 	case "uuid":
 		ratelimit.SetKeyMode(ratelimit.KeyModeUUID)
 	default:
