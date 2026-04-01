@@ -107,3 +107,19 @@ func DeviceClearEgressForUUID(uuid string) int {
 	}
 	return n
 }
+
+func DeviceConnID(deviceKey string) (ConnID, bool) {
+	if deviceKey == "" {
+		return 0, false
+	}
+
+	deviceEntries.mu.Lock()
+	defer deviceEntries.mu.Unlock()
+
+	e := deviceEntries.m[deviceKey]
+	if e == nil {
+		return 0, false
+	}
+
+	return e.id, true
+}
