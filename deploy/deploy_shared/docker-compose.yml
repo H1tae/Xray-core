@@ -1,0 +1,10 @@
+name: eiravpn-xray-shared
+
+services:
+  xray:
+    image: ${XRAY_DOCKER_IMAGE:-eiravpn-xray:latest}
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ${XRAY_CONFIG_DIR:-./configs}:/app/configs:ro
+    command: ["run", "-config", "/app/configs/server.json"]

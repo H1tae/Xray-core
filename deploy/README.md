@@ -1,29 +1,102 @@
-# deploy
+# Docker Deploy
 
-Minimal self-contained deploy folder for running Xray through Docker with a config stored in this directory.
+Теперь deploy-развёртка Xray разделена на два независимых профиля:
 
-## Files
+- `deploy/deploy_allocated`
+- `deploy/deploy_shared`
 
-- `.env.example` - image and docker wrapper settings
-- `server.json` - Xray config mounted into the container
-- `build_image.sh` - builds the Docker image from the local `xray` binary and saves an image tar
-- `start.sh` - validates config in a temporary container and starts Xray with `docker compose`
-- `stop.sh` - stops the Docker service
-- `status.sh` - shows current container status
-- `logs.sh` - tails Docker logs
+Каждый профиль имеет собственные:
 
-## Usage
+- `configs/server.json`
+- `.env.example`
+- `docker-compose.yml`
+- `build_image.sh`
+- `start.sh`
+- `stop.sh`
+- `status.sh`
+- `logs.sh`
+
+В корне `deploy/` остаются только общие файлы:
+
+- `build_images.sh`
+- `README.md`
+
+`build_image.sh` внутри каждого профиля перед сборкой синхронизирует свой
+базовый конфиг из `Xray-core/configs`, так что:
+
+- `deploy_allocated` использует `configs/server_allocated.json`
+- `deploy_shared` использует `configs/server_shared.json`
+
+## Базовые Конфиги
+
+В исходниках теперь есть два отдельных базовых конфига:
+
+- `xray-fork/Xray-core/configs/server_allocated.json`
+- `xray-fork/Xray-core/configs/server_shared.json`
+
+Старый `xray-fork/Xray-core/configs/server.json` оставлен как совместимый
+локальный конфиг.
+
+## Как Работать С Профилями
+
+### Allocated
 
 ```bash
-cd xray-fork/Xray-core/deploy
+cd xray-fork/Xray-core/deploy/deploy_allocated
 cp .env.example .env
 bash build_image.sh
 bash start.sh
 ```
 
-By default:
+### Shared
 
-- image name is `eiravpn-xray:latest`
-- image tar is `./eiravpn-xray-image.tar.gz`
-- config directory is `${XRAY_CONFIG_DIR}` and must contain `server.json`
-- container uses `network_mode: host`, so Xray listens on the same ports as in the JSON config
+```bash
+cd xray-fork/Xray-core/deploy/deploy_shared
+cp .env.example .env
+bash build_image.sh
+bash start.sh
+```
+
+## Общая Сборка Обоих Образов
+
+Если нужно собрать оба варианта подряд:
+
+```bash
+cd xray-fork/Xray-core/deploy
+bash build_images.sh
+```
+
+Он просто по очереди запускает:
+
+- `deploy_allocated/build_image.sh`
+- `deploy_shared/build_image.sh`
+
+## Что Кидать На Сервер
+
+Теперь можно переносить на сервер только один нужный профиль:
+
+- `xray-fork/Xray-core/deploy/deploy_allocated`
+- `xray-fork/Xray-core/deploy/deploy_shared`
+
+Обе папки самодостаточны для runtime: внутри уже есть свои `common.sh`,
+`.env.example`, `docker-compose.yml`, `configs/server.json` и все управляющие
+скрипты.
+
+Если образ уже собран локально, достаточно перенести профиль вместе с
+`eiravpn-xray-image.tar.gz` и на сервере запускать только:
+
+```bash
+cd deploy_allocated
+bash start.sh
+```
+
+или:
+
+```bash
+cd deploy_shared
+bash start.sh
+```
+
+`build_image.sh` внутри профиля рассчитан на запуск из полного checkout
+репозитория. Если на сервере лежит только одна deploy-папка, для запуска нужен
+уже готовый tar образа.

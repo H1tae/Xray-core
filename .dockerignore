@@ -1,0 +1,5 @@
+deploy/deploy_allocated/.env
+deploy/deploy_shared/.env
+deploy/deploy_allocated/eiravpn-xray-image.tar.gz
+deploy/deploy_shared/eiravpn-xray-image.tar.gz
+xray
