@@ -4,7 +4,7 @@ set -euo pipefail
 
 xray_deploy_repo_dir() {
   local profile_dir="$1"
-  (cd "${profile_dir}/.." && pwd)
+  (cd "${profile_dir}/../.." && pwd)
 }
 
 xray_deploy_load_env() {
@@ -54,6 +54,24 @@ xray_deploy_wait_for_docker() {
   done
 }
 
+xray_deploy_profile_source_config() {
+  local repo_dir="$1"
+  local profile_name="$2"
+
+  case "${profile_name}" in
+    deploy_allocated)
+      printf '%s\n' "${repo_dir}/configs/server_allocated.json"
+      ;;
+    deploy_shared)
+      printf '%s\n' "${repo_dir}/configs/server_shared.json"
+      ;;
+    *)
+      echo "unsupported deploy profile ${profile_name}" >&2
+      return 1
+      ;;
+  esac
+}
+
 xray_deploy_build_image() {
   local profile_dir="$1"
   local env_file="${profile_dir}/.env"
@@ -66,14 +84,24 @@ xray_deploy_build_image() {
 
   if [[ ! -f "${repo_dir}/Dockerfile" ]]; then
     echo "missing ${repo_dir}/Dockerfile" >&2
+    echo "build_image.sh expects a full repository checkout" >&2
+    echo "on a server with only $(basename "${profile_dir}"), use the prebuilt image tar and start.sh" >&2
     exit 1
   fi
 
-  if [[ ! -x "${repo_dir}/xray" ]]; then
-    echo "missing executable ${repo_dir}/xray" >&2
-    echo "build or copy the xray binary before running build_image.sh" >&2
+  local profile_name source_config target_config
+  profile_name="$(basename "${profile_dir}")"
+  source_config="$(xray_deploy_profile_source_config "${repo_dir}" "${profile_name}")"
+  target_config="${profile_dir}/configs/server.json"
+
+  if [[ ! -f "${source_config}" ]]; then
+    echo "missing source config ${source_config}" >&2
     exit 1
   fi
+
+  mkdir -p "$(dirname "${target_config}")"
+  cp "${source_config}" "${target_config}"
+  echo "synced ${target_config} from ${source_config}"
 
   if [[ ! -f "${env_file}" ]]; then
     cp "${env_example_file}" "${env_file}"
@@ -83,10 +111,8 @@ xray_deploy_build_image() {
   xray_deploy_load_env "${env_file}"
 
   local image_name="${XRAY_DOCKER_IMAGE:-${default_image_name}}"
-  local image_tar="${XRAY_DOCKER_IMAGE_TAR:-${default_image_tar}}"
+  local image_tar="${default_image_tar}"
   local docker_wait_timeout="${XRAY_DOCKER_WAIT_TIMEOUT_SECONDS:-60}"
-
-  image_tar="$(xray_deploy_resolve_path "${profile_dir}" "${image_tar}")"
 
   xray_deploy_wait_for_docker "${docker_wait_timeout}" || exit 1
 
@@ -131,13 +157,12 @@ xray_deploy_start() {
   xray_deploy_load_env "${env_file}"
 
   local image_name="${XRAY_DOCKER_IMAGE:-${default_image_name}}"
-  local image_tar="${XRAY_DOCKER_IMAGE_TAR:-${default_image_tar}}"
-  local config_dir="${XRAY_CONFIG_DIR:-.}"
+  local image_tar="${default_image_tar}"
+  local config_dir="${XRAY_CONFIG_DIR:-./configs}"
   local config_file
   local docker_wait_timeout="${XRAY_DOCKER_WAIT_TIMEOUT_SECONDS:-60}"
   local runtime_config_dir="/app/configs"
 
-  image_tar="$(xray_deploy_resolve_path "${profile_dir}" "${image_tar}")"
   config_dir="$(xray_deploy_resolve_path "${profile_dir}" "${config_dir}")"
   config_file="${config_dir}/server.json"
 

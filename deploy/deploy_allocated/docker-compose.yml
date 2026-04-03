@@ -1,4 +1,4 @@
-name: xray
+name: eiravpn-xray-allocated
 
 services:
   xray:
@@ -6,5 +6,5 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      - ${XRAY_CONFIG_DIR:-.}:/app/configs:ro
+      - ${XRAY_CONFIG_DIR:-./configs}:/app/configs:ro
     command: ["run", "-config", "/app/configs/server.json"]
