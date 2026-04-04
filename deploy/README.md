@@ -10,6 +10,7 @@
 - `configs/server.json`
 - `.env.example`
 - `docker-compose.yml`
+- `bootstrap_server.sh`
 - `build_image.sh`
 - `start.sh`
 - `stop.sh`
@@ -57,6 +58,31 @@ bash build_image.sh
 bash start.sh
 ```
 
+## Быстрый Запуск На Новом Сервере
+
+Если на сервер перекинут уже готовый deploy-профиль вместе с
+`eiravpn-xray-image.tar.gz`, можно одной командой поставить Docker и сразу
+поднять сервис.
+
+### Allocated
+
+```bash
+cd xray-fork/Xray-core/deploy/deploy_allocated
+cp .env.example .env
+bash bootstrap_server.sh
+```
+
+### Shared
+
+```bash
+cd xray-fork/Xray-core/deploy/deploy_shared
+cp .env.example .env
+bash bootstrap_server.sh
+```
+
+`bootstrap_server.sh` рассчитан на Ubuntu/Debian, ставит Docker Engine +
+Compose plugin и затем вызывает `start.sh`.
+
 ## Общая Сборка Обоих Образов
 
 Если нужно собрать оба варианта подряд:
@@ -79,8 +105,8 @@ bash build_images.sh
 - `xray-fork/Xray-core/deploy/deploy_shared`
 
 Обе папки самодостаточны для runtime: внутри уже есть свои `common.sh`,
-`.env.example`, `docker-compose.yml`, `configs/server.json` и все управляющие
-скрипты.
+`.env.example`, `docker-compose.yml`, `configs/server.json`,
+`bootstrap_server.sh` и все управляющие скрипты.
 
 Если образ уже собран локально, достаточно перенести профиль вместе с
 `eiravpn-xray-image.tar.gz` и на сервере запускать только:
