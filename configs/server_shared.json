@@ -23,13 +23,7 @@
       "port": 10443,
       "protocol": "vless",
       "settings": {
-        "clients": [
-          {
-            "id": "152f6ad5-aa60-4d0e-9d30-0ff2bf99e0d5",
-            "email": "test@local",
-            "flow": "xtls-rprx-vision"
-          }
-        ],
+        "clients": [],
         "decryption": "none",
         "fallbacks": [
           {
@@ -61,13 +55,7 @@
       "port": 20443,
       "protocol": "vless",
       "settings": {
-        "clients": [
-          {
-            "id": "152f6ad5-aa60-4d0e-9d30-0ff2bf99e0d5",
-            "email": "test@local",
-            "flow": "xtls-rprx-vision"
-          }
-        ],
+        "clients": [],
         "decryption": "none",
         "fallbacks": [
           {
@@ -99,13 +87,7 @@
       "port": 11443,
       "protocol": "vless",
       "settings": {
-        "clients": [
-          {
-            "id": "152f6ad5-aa60-4d0e-9d30-0ff2bf99e0d5",
-            "email": "test@local",
-            "flow": ""
-          }
-        ],
+        "clients": [],
         "decryption": "none"
       },
       "streamSettings": {
@@ -128,13 +110,7 @@
       "port": 21443,
       "protocol": "vless",
       "settings": {
-        "clients": [
-          {
-            "id": "152f6ad5-aa60-4d0e-9d30-0ff2bf99e0d5",
-            "email": "test@local",
-            "flow": ""
-          }
-        ],
+        "clients": [],
         "decryption": "none"
       },
       "streamSettings": {
