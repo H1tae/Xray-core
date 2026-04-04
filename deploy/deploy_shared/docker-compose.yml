@@ -4,6 +4,11 @@ services:
   xray:
     image: ${XRAY_DOCKER_IMAGE:-eiravpn-xray:latest}
     restart: unless-stopped
+    logging:
+      driver: local
+      options:
+        max-size: "10m"
+        max-file: "5"
     network_mode: host
     volumes:
       - ${XRAY_CONFIG_DIR:-./configs}:/app/configs:ro
