@@ -23,7 +23,8 @@
 - `README.md`
 
 `build_image.sh` внутри каждого профиля перед сборкой синхронизирует свой
-базовый конфиг из `Xray-core/configs`, так что:
+базовый конфиг из `Xray-core/configs` и сохраняет рядом с профилем образ
+`xray`, так что:
 
 - `deploy_allocated` использует `configs/server_allocated.json`
 - `deploy_shared` использует `configs/server_shared.json`
@@ -39,6 +40,11 @@
 локальный конфиг.
 
 ## Как Работать С Профилями
+
+Сейчас сами профили Xray содержат только backend-конфиг. Внешний `:443`
+терминируется отдельным `caddy`, который теперь лежит в `agent/deploy` и
+роутит по `serverName` на два внутренних REALITY inbound-а Xray. Каждый из них
+умеет fallback в локальный `xhttp` inbound.
 
 ### Allocated
 
@@ -104,8 +110,8 @@ bash build_images.sh
 - `xray-fork/Xray-core/deploy/deploy_allocated`
 - `xray-fork/Xray-core/deploy/deploy_shared`
 
-Обе папки самодостаточны для runtime: внутри уже есть свои `common.sh`,
-`.env.example`, `docker-compose.yml`, `configs/server.json`,
+Обе папки самодостаточны для runtime backend-сервиса: внутри уже есть свои
+`common.sh`, `.env.example`, `docker-compose.yml`, `configs/server.json`,
 `bootstrap_server.sh` и все управляющие скрипты.
 
 Если образ уже собран локально, достаточно перенести профиль вместе с
