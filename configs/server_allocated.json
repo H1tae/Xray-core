@@ -17,22 +17,18 @@
 
   "inbounds": [
     {
-      "tag": "reality-vless-cloudflare",
+      "tag": "reality-vless-microsoft",
       "listen": "127.0.0.1",
       "port": 10443,
       "protocol": "vless",
 
       "settings": {
-        "clients": [
-          {
-            "id": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb",
-            "email": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb"
-          }
-        ],
+        "clients": [],
         "decryption": "none",
         "fallbacks": [
           {
-            "path": "/xhttp",
+            "name": "www.microsoft.com",
+            "path": "/xhttp-ms",
             "dest": 11443
           }
         ]
@@ -43,11 +39,11 @@
         "security": "reality",
         "realitySettings": {
           "show": false,
-          "dest": "www.cloudflare.com:443",
+          "dest": "www.microsoft.com:443",
           "xver": 0,
-          "serverNames": ["www.cloudflare.com"],
-          "privateKey": "MFnEfjedCxNBpytmR_7NeFTFXDivswSecmZ9--chMUc",
-          "shortIds": ["906f47df46efecc5"]
+          "serverNames": ["www.microsoft.com"],
+          "privateKey": "sLX9ZWx6wEYAVOIHxXzBdChymbLNgJ68bP0BbIUS4lU",
+          "shortIds": ["23f7178936edc8c6"]
         }
       },
 
@@ -66,17 +62,13 @@
       "protocol": "vless",
 
       "settings": {
-        "clients": [
-          {
-            "id": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb",
-            "email": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb"
-          }
-        ],
+        "clients": [],
         "decryption": "none",
         "fallbacks": [
           {
-            "path": "/xhttp",
-            "dest": 11443
+            "name": "browser.yandex.ru",
+            "path": "/xhttp-ya",
+            "dest": 21443
           }
         ]
       },
@@ -89,8 +81,8 @@
           "dest": "browser.yandex.ru:443",
           "xver": 0,
           "serverNames": ["browser.yandex.ru"],
-          "privateKey": "MFnEfjedCxNBpytmR_7NeFTFXDivswSecmZ9--chMUc",
-          "shortIds": ["906f47df46efecc5"]
+          "privateKey": "sLX9ZWx6wEYAVOIHxXzBdChymbLNgJ68bP0BbIUS4lU",
+          "shortIds": ["23f7178936edc8c6"]
         }
       },
 
@@ -103,26 +95,48 @@
     },
 
     {
-      "tag": "xhttp-vless",
+      "tag": "xhttp-vless-microsoft",
       "listen": "127.0.0.1",
       "port": 11443,
       "protocol": "vless",
       "settings": {
-        "clients": [
-          {
-            "id": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb",
-            "email": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb"
-          }
-        ],
+        "clients": [],
         "decryption": "none"
       },
       "streamSettings": {
         "network": "xhttp",
         "security": "none",
         "xhttpSettings": {
-          "path": "/xhttp",
+          "host": "www.microsoft.com",
+          "path": "/xhttp-ms",
           "mode": "auto"
         }
+      },
+      "sniffing": {
+        "enabled": false
+      }
+    },
+
+    {
+      "tag": "xhttp-vless-yandex",
+      "listen": "127.0.0.1",
+      "port": 21443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "host": "browser.yandex.ru",
+          "path": "/xhttp-ya",
+          "mode": "auto"
+        }
+      },
+      "sniffing": {
+        "enabled": false
       }
     },
 
@@ -132,12 +146,7 @@
       "port": 8443,
       "protocol": "vless",
       "settings": {
-        "clients": [
-          {
-            "id": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb",
-            "email": "c2a9d5a9-a8be-455b-bd91-5d4c4ff8c0cb"
-          }
-        ],
+        "clients": [],
         "decryption": "none"
       },
       "streamSettings": {
@@ -169,9 +178,10 @@
       {
         "type": "public",
         "inboundTag": [
-          "reality-vless-cloudflare",
+          "reality-vless-microsoft",
           "reality-vless-yandex",
-          "xhttp-vless"
+          "xhttp-vless-microsoft",
+          "xhttp-vless-yandex"
         ],
         "outboundTag": "direct"
       },
