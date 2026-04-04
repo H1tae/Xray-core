@@ -2,20 +2,19 @@
   "log": {
     "loglevel": "info"
   },
+
   "api": {
     "tag": "api",
-    "services": ["HandlerService", "StatsService", "RateLimitService"]
+    "listen": "127.0.0.1:10085",
+    "services": [
+      "reflectionservice",
+      "handlerservice",
+      "ratelimitservice"
+    ]
   },
+
   "inbounds": [
-    {
-      "tag": "api-in",
-      "listen": "127.0.0.1",
-      "port": 10085,
-      "protocol": "dokodemo-door",
-      "settings": {
-        "address": "127.0.0.1"
-      }
-    },
+
 
     {
       "tag": "reality-vless-microsoft",
