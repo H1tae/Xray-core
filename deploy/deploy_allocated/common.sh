@@ -120,6 +120,58 @@ xray_deploy_profile_source_config() {
   esac
 }
 
+xray_deploy_build_docker_image() {
+  local image_name="$1"
+  local dockerfile="$2"
+  local build_context="$3"
+
+  if docker buildx version >/dev/null 2>&1; then
+    docker buildx build --load \
+      -t "${image_name}" \
+      -f "${dockerfile}" \
+      "${build_context}"
+  else
+    docker build \
+      -t "${image_name}" \
+      -f "${dockerfile}" \
+      "${build_context}"
+  fi
+}
+
+xray_deploy_save_docker_image() {
+  local image_name="$1"
+  local image_tar="$2"
+
+  mkdir -p "$(dirname "${image_tar}")"
+  case "${image_tar}" in
+    *.tar.gz|*.tgz)
+      docker save "${image_name}" | gzip -c > "${image_tar}"
+      ;;
+    *)
+      docker save -o "${image_tar}" "${image_name}"
+      ;;
+  esac
+}
+
+xray_deploy_load_docker_image() {
+  local image_name="$1"
+  local image_tar="$2"
+
+  if [[ -f "${image_tar}" ]]; then
+    case "${image_tar}" in
+      *.tar.gz|*.tgz)
+        gzip -dc "${image_tar}" | docker load
+        ;;
+      *)
+        docker load -i "${image_tar}"
+        ;;
+    esac
+    return 0
+  fi
+
+  docker image inspect "${image_name}" >/dev/null 2>&1
+}
+
 xray_deploy_build_image() {
   local profile_dir="$1"
   local env_file="${profile_dir}/.env"
@@ -164,28 +216,11 @@ xray_deploy_build_image() {
 
   xray_deploy_wait_for_docker "${docker_wait_timeout}" || exit 1
 
-  if docker buildx version >/dev/null 2>&1; then
-    docker buildx build --load \
-      -t "${image_name}" \
-      -f "${repo_dir}/Dockerfile" \
-      "${repo_dir}"
-  else
-    docker build \
-      -t "${image_name}" \
-      -f "${repo_dir}/Dockerfile" \
-      "${repo_dir}"
-  fi
-
-  mkdir -p "$(dirname "${image_tar}")"
-  case "${image_tar}" in
-    *.tar.gz|*.tgz)
-      docker save "${image_name}" | gzip -c > "${image_tar}"
-      ;;
-    *)
-      docker save -o "${image_tar}" "${image_name}"
-      ;;
-  esac
-
+  xray_deploy_build_docker_image \
+    "${image_name}" \
+    "${repo_dir}/Dockerfile" \
+    "${repo_dir}"
+  xray_deploy_save_docker_image "${image_name}" "${image_tar}"
   echo "saved ${image_name} to ${image_tar}"
 }
 
@@ -226,16 +261,7 @@ xray_deploy_start() {
 
   xray_deploy_wait_for_docker "${docker_wait_timeout}" || exit 1
 
-  if [[ -f "${image_tar}" ]]; then
-    case "${image_tar}" in
-      *.tar.gz|*.tgz)
-        gzip -dc "${image_tar}" | docker load
-        ;;
-      *)
-        docker load -i "${image_tar}"
-        ;;
-    esac
-  elif ! docker image inspect "${image_name}" >/dev/null 2>&1; then
+  if ! xray_deploy_load_docker_image "${image_name}" "${image_tar}"; then
     echo "missing Docker image ${image_name}" >&2
     echo "expected either a loaded image or ${image_tar}" >&2
     exit 1
