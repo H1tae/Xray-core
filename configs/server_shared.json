@@ -28,7 +28,7 @@
         "fallbacks": [
           {
             "name": "www.microsoft.com",
-            "path": "/xhttp-ms",
+            "path": "/xhttp",
             "dest": 11443
           }
         ]
@@ -60,7 +60,7 @@
         "fallbacks": [
           {
             "name": "browser.yandex.ru",
-            "path": "/xhttp-ya",
+            "path": "/xhttp",
             "dest": 21443
           }
         ]
@@ -95,7 +95,7 @@
         "security": "none",
         "xhttpSettings": {
           "host": "www.microsoft.com",
-          "path": "/xhttp-ms",
+          "path": "/xhttp",
           "mode": "auto"
         }
       },
@@ -118,7 +118,7 @@
         "security": "none",
         "xhttpSettings": {
           "host": "browser.yandex.ru",
-          "path": "/xhttp-ya",
+          "path": "/xhttp",
           "mode": "auto"
         }
       },
