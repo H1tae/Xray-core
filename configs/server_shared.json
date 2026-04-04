@@ -135,7 +135,7 @@
       "settings": {
         "vnext": [
           {
-            "address": "",
+            "address": "__REDIRECT_IP__",
             "port": 443,
             "users": [
               {
