@@ -172,6 +172,22 @@ xray_deploy_load_docker_image() {
   docker image inspect "${image_name}" >/dev/null 2>&1
 }
 
+xray_deploy_validate_runtime_config() {
+  local image_name="$1"
+  local env_file="$2"
+  local config_dir="$3"
+  local script_file="$4"
+
+  docker run --rm \
+    --entrypoint /bin/sh \
+    --network host \
+    --env-file "${env_file}" \
+    -v "${config_dir}:/app/configs:ro" \
+    -v "${script_file}:/app/deploy/xray_entrypoint.sh:ro" \
+    "${image_name}" \
+    /app/deploy/xray_entrypoint.sh test
+}
+
 xray_deploy_build_image() {
   local profile_dir="$1"
   local env_file="${profile_dir}/.env"
@@ -199,16 +215,16 @@ xray_deploy_build_image() {
     exit 1
   fi
 
-  mkdir -p "$(dirname "${target_config}")"
-  cp "${source_config}" "${target_config}"
-  echo "synced ${target_config} from ${source_config}"
-
   if [[ ! -f "${env_file}" ]]; then
     cp "${env_example_file}" "${env_file}"
     echo "created ${env_file} from ${env_example_file}"
   fi
 
   xray_deploy_load_env "${env_file}"
+
+  mkdir -p "$(dirname "${target_config}")"
+  cp "${source_config}" "${target_config}"
+  echo "synced ${target_config} from ${source_config}"
 
   local image_name="${XRAY_DOCKER_IMAGE:-${default_image_name}}"
   local image_tar="${default_image_tar}"
@@ -245,6 +261,7 @@ xray_deploy_start() {
   local config_file
   local docker_wait_timeout="${XRAY_DOCKER_WAIT_TIMEOUT_SECONDS:-60}"
   local runtime_config_dir="/app/configs"
+  local entrypoint_script="${profile_dir}/xray_entrypoint.sh"
 
   config_dir="$(xray_deploy_resolve_path "${profile_dir}" "${config_dir}")"
   config_file="${config_dir}/server.json"
@@ -267,10 +284,13 @@ xray_deploy_start() {
     exit 1
   fi
 
-  if ! docker run --rm \
-      --network host \
-      -v "${config_dir}:${runtime_config_dir}:ro" \
-      "${image_name}" run -test -config "${runtime_config_dir}/server.json"; then
+  if [[ ! -f "${entrypoint_script}" ]]; then
+    echo "missing ${entrypoint_script}" >&2
+    exit 1
+  fi
+
+  if ! xray_deploy_validate_runtime_config "${image_name}" "${env_file}" \
+      "${config_dir}" "${entrypoint_script}"; then
     echo "xray config test failed for ${config_file}" >&2
     exit 1
   fi

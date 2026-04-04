@@ -9,7 +9,10 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
+    env_file:
+      - .env
     network_mode: host
     volumes:
       - ${XRAY_CONFIG_DIR:-./configs}:/app/configs:ro
-    command: ["run", "-config", "/app/configs/server.json"]
+      - ./xray_entrypoint.sh:/app/deploy/xray_entrypoint.sh:ro
+    entrypoint: ["/bin/sh", "/app/deploy/xray_entrypoint.sh", "run"]
