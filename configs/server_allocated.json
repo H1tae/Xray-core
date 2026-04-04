@@ -28,7 +28,6 @@
         "fallbacks": [
           {
             "name": "www.microsoft.com",
-            "path": "/xhttp",
             "dest": 11443
           }
         ]
@@ -67,7 +66,6 @@
         "fallbacks": [
           {
             "name": "browser.yandex.ru",
-            "path": "/xhttp",
             "dest": 21443
           }
         ]
