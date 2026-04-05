@@ -7,7 +7,7 @@
 
   "api": {
     "tag": "api",
-    "listen": "127.0.0.1:10085",
+    "listen": "0.0.0.0:10085",
     "services": [
       "reflectionservice",
       "handlerservice",
@@ -18,7 +18,7 @@
   "inbounds": [
     {
       "tag": "reality-vless-microsoft",
-      "listen": "127.0.0.1",
+      "listen": "0.0.0.0",
       "port": 10443,
       "protocol": "vless",
 
@@ -56,7 +56,7 @@
 
     {
       "tag": "reality-vless-yandex",
-      "listen": "127.0.0.1",
+      "listen": "0.0.0.0",
       "port": 20443,
       "protocol": "vless",
 
