@@ -67,7 +67,7 @@ func (r *wrapReader) ReadMultiBufferTimeout(timeout time.Duration) (buf.MultiBuf
 			}
 			Global.AddRx(r.conn, uint64(nBytes))
 		}
-		if err != nil {
+		if err != nil && r.onClose != nil {
 			r.onClose()
 		}
 		return mb, err
@@ -134,8 +134,8 @@ func NewConn(uuid string, uplinkWriter buf.Writer, downlinkWriter buf.Writer, up
 	uw := &wrapWriter{inner: uplinkWriter, conn: connID, dir: Up, onClose: cleanup}
 	dw := &wrapWriter{inner: downlinkWriter, conn: connID, dir: Down, onClose: cleanup}
 
-	ur := &wrapReader{inner: uplinkReader, onClose: cleanup}
-	dr := &wrapReader{inner: downlinkReader, onClose: cleanup}
+	ur := &wrapReader{inner: uplinkReader, conn: connID, onClose: cleanup}
+	dr := &wrapReader{inner: downlinkReader, conn: connID, onClose: cleanup}
 
 	return connID, uw, dw, ur, dr
 }
