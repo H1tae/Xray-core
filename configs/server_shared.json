@@ -190,7 +190,7 @@
             "port": 443,
             "users": [
               {
-                "id": "152f6ad5-aa60-4d0e-9d30-0ff2bf99e0d5",
+                "id": "__REDIRECT_ID__",
                 "flow": "xtls-rprx-vision",
                 "encryption": "none"
               }
