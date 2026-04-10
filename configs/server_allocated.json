@@ -93,6 +93,44 @@
     },
 
     {
+      "tag": "reality-vless-x5",
+      "listen": "0.0.0.0",
+      "port": 30443,
+      "protocol": "vless",
+
+      "settings": {
+        "clients": [],
+        "decryption": "none",
+        "fallbacks": [
+          {
+            "name": "5post-gate.x5.ru",
+            "dest": 31443
+          }
+        ]
+      },
+
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "dest": "5post-gate.x5.ru:443",
+          "xver": 0,
+          "serverNames": ["5post-gate.x5.ru"],
+          "privateKey": "sLX9ZWx6wEYAVOIHxXzBdChymbLNgJ68bP0BbIUS4lU",
+          "shortIds": ["23f7178936edc8c6"]
+        }
+      },
+
+      "sniffing": {
+        "enabled": false,
+        "destOverride": ["http", "tls", "quic"],
+        "metadataOnly": false,
+        "routeOnly": false
+      }
+    },
+
+    {
       "tag": "xhttp-vless-microsoft",
       "listen": "127.0.0.1",
       "port": 11443,
@@ -129,6 +167,29 @@
         "security": "none",
         "xhttpSettings": {
           "host": "browser.yandex.ru",
+          "path": "/xhttp",
+          "mode": "auto"
+        }
+      },
+      "sniffing": {
+        "enabled": false
+      }
+    },
+
+    {
+      "tag": "xhttp-vless-x5",
+      "listen": "127.0.0.1",
+      "port": 31443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "none",
+        "xhttpSettings": {
+          "host": "5post-gate.x5.ru",
           "path": "/xhttp",
           "mode": "auto"
         }
@@ -178,8 +239,10 @@
         "inboundTag": [
           "reality-vless-microsoft",
           "reality-vless-yandex",
+          "reality-vless-x5",
           "xhttp-vless-microsoft",
-          "xhttp-vless-yandex"
+          "xhttp-vless-yandex",
+          "xhttp-vless-x5"
         ],
         "outboundTag": "direct"
       },
