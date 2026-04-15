@@ -2,7 +2,7 @@
   "log": { "loglevel": "warning" },
 
   "ratelimit": {
-    "graceSeconds": 15
+    "graceSeconds": 300
   },
 
   "api": {
