@@ -2,7 +2,7 @@
   "log": { "loglevel": "warning" },
 
   "ratelimit": {
-    "graceSeconds": 15
+    "graceSeconds": 300
   },
 
   "api": {
@@ -200,21 +200,6 @@
     },
 
     {
-      "tag": "vless-admin",
-      "listen": "127.0.0.1",
-      "port": 8443,
-      "protocol": "vless",
-      "settings": {
-        "clients": [],
-        "decryption": "none"
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "none"
-      }
-    },
-
-    {
       "tag": "health-socks",
       "listen": "127.0.0.1",
       "port": 1081,
@@ -249,11 +234,6 @@
       {
         "type": "health-check",
         "inboundTag": ["health-socks"],
-        "outboundTag": "direct"
-      },
-      {
-        "type": "admin",
-        "inboundTag": ["vless-admin"],
         "outboundTag": "direct"
       }
     ]
