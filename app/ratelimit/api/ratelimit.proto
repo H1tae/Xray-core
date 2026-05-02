@@ -47,6 +47,28 @@ service RateLimitService {
   rpc ClearUserDefaultPerConnLimit(ClearUserDefaultPerConnLimitRequest) returns (ClearUserDefaultPerConnLimitResponse);
 
   rpc ClearUserConnOverrideLimits(ClearUserConnOverrideLimitsRequest) returns (ClearUserConnOverrideLimitsResponse);
+
+  rpc ClearAllRateLimits(ClearAllRateLimitsRequest) returns (ClearAllRateLimitsResponse);
+
+  rpc ClearUserRateLimits(ClearUserRateLimitsRequest) returns (ClearUserRateLimitsResponse);
+
+  rpc SetUserDefaultPerConnLimits(SetUserDefaultPerConnLimitsRequest) returns (SetUserDefaultPerConnLimitsResponse);
+}
+
+message ClearAllRateLimitsRequest {}
+
+message ClearAllRateLimitsResponse {
+  uint32 cleared_defaults = 1;
+  uint32 cleared_overrides = 2;
+}
+
+message ClearUserRateLimitsRequest {
+  repeated string uuids = 1;
+}
+
+message ClearUserRateLimitsResponse {
+  uint32 cleared_defaults = 1;
+  uint32 cleared_overrides = 2;
 }
 
 message ClearUserConnOverrideLimitsRequest {
@@ -130,6 +152,20 @@ message SetUserDefaultPerConnLimitRequest {
   uint64 up_bps = 3;
 }
 message SetUserDefaultPerConnLimitResponse {}
+
+message UserDefaultPerConnLimit {
+  string uuid = 1;
+  uint64 down_bps = 2;
+  uint64 up_bps = 3;
+}
+
+message SetUserDefaultPerConnLimitsRequest {
+  repeated UserDefaultPerConnLimit limits = 1;
+}
+message SetUserDefaultPerConnLimitsResponse {
+  uint32 updated = 1;
+  uint32 cleared_overrides = 2;
+}
 
 message ListUserConnectionsRequest {
   string uuid = 1;

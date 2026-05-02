@@ -30,28 +30,73 @@ func (s *LimitStore) SetUserDefault(uuid string, down, up uint64) {
 	s.defaultPerConn[uuid] = RateBps{Down: down, Up: up}
 }
 
+func (s *LimitStore) SetUserDefaults(limits map[string]RateBps) int {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	updated := 0
+	for uuid, limit := range limits {
+		if uuid == "" {
+			continue
+		}
+		s.defaultPerConn[uuid] = limit
+		updated++
+	}
+	return updated
+}
+
 func (s *LimitStore) ClearUserDefault(uuid string) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	delete(s.defaultPerConn, uuid)
 }
 
-func (s *LimitStore) ClearUserOverride(uuid string) {
+func (s *LimitStore) ClearUserDefaults(uuids []string) int {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	delete(s.defaultPerConn, uuid)
+
+	cleared := 0
+	for _, uuid := range uuids {
+		if uuid == "" {
+			continue
+		}
+		if _, ok := s.defaultPerConn[uuid]; ok {
+			delete(s.defaultPerConn, uuid)
+			cleared++
+		}
+	}
+	return cleared
 }
 
-// ClearUserOverride удаляет ВСЕ overrides (per-conn) для указанного uuid.
-// Возвращает количество очищенных записей.
+func (s *LimitStore) ClearAll() (defaults int, overrides int) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	defaults = len(s.defaultPerConn)
+	overrides = len(s.overrides)
+	s.defaultPerConn = make(map[string]RateBps)
+	s.overrides = make(map[ConnID]RateBps)
+	return defaults, overrides
+}
+
 func ClearUserOverride(uuid string) int {
-	if uuid == "" {
-		return 0
+	return ClearUserOverrides([]string{uuid})
+}
+
+// ClearUserOverrides удаляет ВСЕ overrides (per-conn) для указанных uuid.
+// Возвращает количество очищенных записей.
+func ClearUserOverrides(uuids []string) int {
+	connIDs := make(map[ConnID]struct{})
+	for _, uuid := range uuids {
+		if uuid == "" {
+			continue
+		}
+		for _, ci := range Global.ListByUUID(uuid) {
+			connIDs[ci.ConnID] = struct{}{}
+		}
 	}
 
-	// Берём все connID, которые сейчас принадлежат этому uuid
-	conns := Global.ListByUUID(uuid)
-	if len(conns) == 0 {
+	if len(connIDs) == 0 {
 		return 0
 	}
 
@@ -60,14 +105,20 @@ func ClearUserOverride(uuid string) int {
 	defer s.mu.Unlock()
 
 	cleared := 0
-	for _, ci := range conns {
-		if _, ok := s.overrides[ci.ConnID]; ok {
-			delete(s.overrides, ci.ConnID)
+	for connID := range connIDs {
+		if _, ok := s.overrides[connID]; ok {
+			delete(s.overrides, connID)
 			cleared++
 		}
 	}
 
 	return cleared
+}
+
+func ClearUserRateLimits(uuids []string) (defaults int, overrides int) {
+	defaults = Limits.ClearUserDefaults(uuids)
+	overrides = ClearUserOverrides(uuids)
+	return defaults, overrides
 }
 
 func (s *LimitStore) SetConnLimit(conn ConnID, down, up uint64) {

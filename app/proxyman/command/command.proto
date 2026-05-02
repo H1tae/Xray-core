@@ -14,8 +14,20 @@ message AddUserOperation {
   xray.common.protocol.User user = 1;
 }
 
+message AddUsersOperation {
+  repeated xray.common.protocol.User users = 1;
+}
+
 message RemoveUserOperation {
   string email = 1;
+}
+
+message RemoveUsersOperation {
+  repeated string emails = 1;
+}
+
+message RemoveAllUsersOperation {
+  repeated string protected_emails = 1;
 }
 
 message AddInboundRequest {

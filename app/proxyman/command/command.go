@@ -52,6 +52,34 @@ func (op *AddUserOperation) ApplyInbound(ctx context.Context, handler inbound.Ha
 }
 
 // ApplyInbound implements InboundOperation.
+func (op *AddUsersOperation) ApplyInbound(ctx context.Context, handler inbound.Handler) error {
+	p, err := getInbound(handler)
+	if err != nil {
+		return err
+	}
+	um, ok := p.(proxy.UserManager)
+	if !ok {
+		return errors.New("proxy is not a UserManager")
+	}
+	for _, user := range op.Users {
+		if user == nil {
+			continue
+		}
+		mUser, err := user.ToMemoryUser()
+		if err != nil {
+			return errors.New("failed to parse user").Base(err)
+		}
+		if mUser.Email != "" && um.GetUser(ctx, mUser.Email) != nil {
+			continue
+		}
+		if err := um.AddUser(ctx, mUser); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// ApplyInbound implements InboundOperation.
 func (op *RemoveUserOperation) ApplyInbound(ctx context.Context, handler inbound.Handler) error {
 	p, err := getInbound(handler)
 	if err != nil {
@@ -62,6 +90,55 @@ func (op *RemoveUserOperation) ApplyInbound(ctx context.Context, handler inbound
 		return errors.New("proxy is not a UserManager")
 	}
 	return um.RemoveUser(ctx, op.Email)
+}
+
+// ApplyInbound implements InboundOperation.
+func (op *RemoveUsersOperation) ApplyInbound(ctx context.Context, handler inbound.Handler) error {
+	p, err := getInbound(handler)
+	if err != nil {
+		return err
+	}
+	um, ok := p.(proxy.UserManager)
+	if !ok {
+		return errors.New("proxy is not a UserManager")
+	}
+	for _, email := range op.Emails {
+		if email == "" || um.GetUser(ctx, email) == nil {
+			continue
+		}
+		if err := um.RemoveUser(ctx, email); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// ApplyInbound implements InboundOperation.
+func (op *RemoveAllUsersOperation) ApplyInbound(ctx context.Context, handler inbound.Handler) error {
+	p, err := getInbound(handler)
+	if err != nil {
+		return err
+	}
+	um, ok := p.(proxy.UserManager)
+	if !ok {
+		return errors.New("proxy is not a UserManager")
+	}
+	protected := make(map[string]struct{}, len(op.ProtectedEmails))
+	for _, email := range op.ProtectedEmails {
+		protected[email] = struct{}{}
+	}
+	for _, user := range um.GetUsers(ctx) {
+		if user == nil || user.Email == "" {
+			continue
+		}
+		if _, ok := protected[user.Email]; ok {
+			continue
+		}
+		if err := um.RemoveUser(ctx, user.Email); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 type handlerServer struct {

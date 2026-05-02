@@ -322,6 +322,34 @@ func (s *Service) ClearUserConnOverrideLimits(
 	}, nil
 }
 
+func (s *Service) ClearAllRateLimits(
+	ctx context.Context,
+	req *ratelimitpb.ClearAllRateLimitsRequest,
+) (*ratelimitpb.ClearAllRateLimitsResponse, error) {
+	defaults, overrides := ratelimit.Limits.ClearAll()
+	return &ratelimitpb.ClearAllRateLimitsResponse{
+		ClearedDefaults:  uint32(defaults),
+		ClearedOverrides: uint32(overrides),
+	}, nil
+}
+
+func (s *Service) ClearUserRateLimits(
+	ctx context.Context,
+	req *ratelimitpb.ClearUserRateLimitsRequest,
+) (*ratelimitpb.ClearUserRateLimitsResponse, error) {
+	for _, uuid := range req.Uuids {
+		if uuid == "" {
+			return nil, errors.New("uuid is empty")
+		}
+	}
+
+	defaults, overrides := ratelimit.ClearUserRateLimits(req.Uuids)
+	return &ratelimitpb.ClearUserRateLimitsResponse{
+		ClearedDefaults:  uint32(defaults),
+		ClearedOverrides: uint32(overrides),
+	}, nil
+}
+
 func (s *Service) SetUserDefaultPerConnLimit(ctx context.Context, req *ratelimitpb.SetUserDefaultPerConnLimitRequest) (*ratelimitpb.SetUserDefaultPerConnLimitResponse, error) {
 	// Минимальная валидация
 	if req.Uuid == "" {
@@ -330,6 +358,28 @@ func (s *Service) SetUserDefaultPerConnLimit(ctx context.Context, req *ratelimit
 	// down/up могут быть 0: тогда это будет “безлимит” или “запрет”? пока трактуем как “0 = безлимит отключён”.
 	ratelimit.Limits.SetUserDefault(req.Uuid, req.DownBps, req.UpBps)
 	return &ratelimitpb.SetUserDefaultPerConnLimitResponse{}, nil
+}
+
+func (s *Service) SetUserDefaultPerConnLimits(ctx context.Context, req *ratelimitpb.SetUserDefaultPerConnLimitsRequest) (*ratelimitpb.SetUserDefaultPerConnLimitsResponse, error) {
+	limits := make(map[string]ratelimit.RateBps, len(req.Limits))
+	uuids := make([]string, 0, len(req.Limits))
+	for _, limit := range req.Limits {
+		if limit == nil || limit.Uuid == "" {
+			return nil, errors.New("uuid is empty")
+		}
+		limits[limit.Uuid] = ratelimit.RateBps{
+			Down: limit.DownBps,
+			Up:   limit.UpBps,
+		}
+		uuids = append(uuids, limit.Uuid)
+	}
+
+	clearedOverrides := ratelimit.ClearUserOverrides(uuids)
+	updated := ratelimit.Limits.SetUserDefaults(limits)
+	return &ratelimitpb.SetUserDefaultPerConnLimitsResponse{
+		Updated:          uint32(updated),
+		ClearedOverrides: uint32(clearedOverrides),
+	}, nil
 }
 
 func (s *Service) SetConnectionLimit(ctx context.Context, req *ratelimitpb.SetConnectionLimitRequest) (*ratelimitpb.SetConnectionLimitResponse, error) {
