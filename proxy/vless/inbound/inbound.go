@@ -5,6 +5,7 @@ import (
 	"context"
 	gotls "crypto/tls"
 	"encoding/base64"
+	"encoding/hex"
 	"io"
 	"reflect"
 	"strconv"
@@ -84,6 +85,7 @@ type Handler struct {
 	defaultDispatcher      routing.Dispatcher
 	ctx                    context.Context
 	fallbacks              map[string]map[string]map[string]*Fallback // or nil
+	shortIdFallbacks       map[[8]byte]*Fallback                      // or nil
 	// regexps               map[string]*regexp.Regexp       // or nil
 }
 
@@ -114,27 +116,42 @@ func New(ctx context.Context, config *Config, dc dns.Client, validator vless.Val
 		}
 	}
 
-	if config.Fallbacks != nil {
-		handler.fallbacks = make(map[string]map[string]map[string]*Fallback)
-		// handler.regexps = make(map[string]*regexp.Regexp)
-		for _, fb := range config.Fallbacks {
-			if handler.fallbacks[fb.Name] == nil {
-				handler.fallbacks[fb.Name] = make(map[string]map[string]*Fallback)
+	for _, fb := range config.Fallbacks {
+		if len(fb.ShortId) > 0 {
+			if len(fb.ShortId) > 8 {
+				return nil, errors.New(`VLESS fallbacks: "shortId" must be no longer than 8 bytes`).AtError()
 			}
-			if handler.fallbacks[fb.Name][fb.Alpn] == nil {
-				handler.fallbacks[fb.Name][fb.Alpn] = make(map[string]*Fallback)
+			var shortId [8]byte
+			copy(shortId[:], fb.ShortId)
+			if handler.shortIdFallbacks == nil {
+				handler.shortIdFallbacks = make(map[[8]byte]*Fallback)
 			}
-			handler.fallbacks[fb.Name][fb.Alpn][fb.Path] = fb
-			/*
-				if fb.Path != "" {
-					if r, err := regexp.Compile(fb.Path); err != nil {
-						return nil, errors.New("invalid path regexp").Base(err).AtError()
-					} else {
-						handler.regexps[fb.Path] = r
-					}
-				}
-			*/
+			handler.shortIdFallbacks[shortId] = fb
+			continue
 		}
+
+		if handler.fallbacks == nil {
+			handler.fallbacks = make(map[string]map[string]map[string]*Fallback)
+		}
+		// handler.regexps = make(map[string]*regexp.Regexp)
+		if handler.fallbacks[fb.Name] == nil {
+			handler.fallbacks[fb.Name] = make(map[string]map[string]*Fallback)
+		}
+		if handler.fallbacks[fb.Name][fb.Alpn] == nil {
+			handler.fallbacks[fb.Name][fb.Alpn] = make(map[string]*Fallback)
+		}
+		handler.fallbacks[fb.Name][fb.Alpn][fb.Path] = fb
+		/*
+			if fb.Path != "" {
+				if r, err := regexp.Compile(fb.Path); err != nil {
+					return nil, errors.New("invalid path regexp").Base(err).AtError()
+				} else {
+					handler.regexps[fb.Path] = r
+				}
+			}
+		*/
+	}
+	if handler.fallbacks != nil {
 		if handler.fallbacks[""] != nil {
 			for name, apfb := range handler.fallbacks {
 				if name != "" {
@@ -302,7 +319,8 @@ func (h *Handler) Process(ctx context.Context, network net.Network, connection s
 	var err error
 
 	napfb := h.fallbacks
-	isfb := napfb != nil
+	shortIdFallbacks := h.shortIdFallbacks
+	isfb := napfb != nil || shortIdFallbacks != nil
 
 	if isfb && firstLen < 18 {
 		err = errors.New("fallback directly")
@@ -319,6 +337,8 @@ func (h *Handler) Process(ctx context.Context, network net.Network, connection s
 
 			name := ""
 			alpn := ""
+			var clientShortId [8]byte
+			hasClientShortId := false
 			if tlsConn, ok := iConn.(*tls.Conn); ok {
 				cs := tlsConn.ConnectionState()
 				name = cs.ServerName
@@ -329,87 +349,101 @@ func (h *Handler) Process(ctx context.Context, network net.Network, connection s
 				cs := realityConn.ConnectionState()
 				name = cs.ServerName
 				alpn = cs.NegotiatedProtocol
+				clientShortId = realityConn.ClientShortId
+				hasClientShortId = true
 				errors.LogInfo(ctx, "realName = "+name)
 				errors.LogInfo(ctx, "realAlpn = "+alpn)
+				errors.LogInfo(ctx, "realShortId = "+hex.EncodeToString(clientShortId[:]))
 			}
 			name = strings.ToLower(name)
 			alpn = strings.ToLower(alpn)
 
-			if len(napfb) > 1 || napfb[""] == nil {
-				if name != "" && napfb[name] == nil {
-					match := ""
-					for n := range napfb {
-						if n != "" && strings.Contains(name, n) && len(n) > len(match) {
-							match = n
-						}
-					}
-					name = match
+			var fb *Fallback
+			if hasClientShortId && shortIdFallbacks != nil {
+				fb = shortIdFallbacks[clientShortId]
+			}
+
+			if fb == nil {
+				if napfb == nil {
+					return errors.New(`failed to find the "shortId" fallback config`).AtWarning()
 				}
-			}
 
-			if napfb[name] == nil {
-				name = ""
-			}
-			apfb := napfb[name]
-			if apfb == nil {
-				return errors.New(`failed to find the default "name" config`).AtWarning()
-			}
+				if len(napfb) > 1 || napfb[""] == nil {
+					if name != "" && napfb[name] == nil {
+						match := ""
+						for n := range napfb {
+							if n != "" && strings.Contains(name, n) && len(n) > len(match) {
+								match = n
+							}
+						}
+						name = match
+					}
+				}
 
-			if apfb[alpn] == nil {
-				alpn = ""
-			}
-			pfb := apfb[alpn]
-			if pfb == nil {
-				return errors.New(`failed to find the default "alpn" config`).AtWarning()
-			}
+				if napfb[name] == nil {
+					name = ""
+				}
+				apfb := napfb[name]
+				if apfb == nil {
+					return errors.New(`failed to find the default "name" config`).AtWarning()
+				}
 
-			path := ""
-			if len(pfb) > 1 || pfb[""] == nil {
-				/*
-					if lines := bytes.Split(firstBytes, []byte{'\r', '\n'}); len(lines) > 1 {
-						if s := bytes.Split(lines[0], []byte{' '}); len(s) == 3 {
-							if len(s[0]) < 8 && len(s[1]) > 0 && len(s[2]) == 8 {
-								errors.New("realPath = " + string(s[1])).AtInfo().WriteToLog(sid)
-								for _, fb := range pfb {
-									if fb.Path != "" && h.regexps[fb.Path].Match(s[1]) {
-										path = fb.Path
+				if apfb[alpn] == nil {
+					alpn = ""
+				}
+				pfb := apfb[alpn]
+				if pfb == nil {
+					return errors.New(`failed to find the default "alpn" config`).AtWarning()
+				}
+
+				path := ""
+				if len(pfb) > 1 || pfb[""] == nil {
+					/*
+						if lines := bytes.Split(firstBytes, []byte{'\r', '\n'}); len(lines) > 1 {
+							if s := bytes.Split(lines[0], []byte{' '}); len(s) == 3 {
+								if len(s[0]) < 8 && len(s[1]) > 0 && len(s[2]) == 8 {
+									errors.New("realPath = " + string(s[1])).AtInfo().WriteToLog(sid)
+									for _, fb := range pfb {
+										if fb.Path != "" && h.regexps[fb.Path].Match(s[1]) {
+											path = fb.Path
+											break
+										}
+									}
+								}
+							}
+						}
+					*/
+					if firstLen >= 18 && first.Byte(4) != '*' { // not h2c
+						firstBytes := first.Bytes()
+						for i := 4; i <= 8; i++ { // 5 -> 9
+							if firstBytes[i] == '/' && firstBytes[i-1] == ' ' {
+								search := len(firstBytes)
+								if search > 64 {
+									search = 64 // up to about 60
+								}
+								for j := i + 1; j < search; j++ {
+									k := firstBytes[j]
+									if k == '\r' || k == '\n' { // avoid logging \r or \n
+										break
+									}
+									if k == '?' || k == ' ' {
+										path = string(firstBytes[i:j])
+										errors.LogInfo(ctx, "realPath = "+path)
+										if pfb[path] == nil {
+											path = ""
+										}
 										break
 									}
 								}
+								break
 							}
-						}
-					}
-				*/
-				if firstLen >= 18 && first.Byte(4) != '*' { // not h2c
-					firstBytes := first.Bytes()
-					for i := 4; i <= 8; i++ { // 5 -> 9
-						if firstBytes[i] == '/' && firstBytes[i-1] == ' ' {
-							search := len(firstBytes)
-							if search > 64 {
-								search = 64 // up to about 60
-							}
-							for j := i + 1; j < search; j++ {
-								k := firstBytes[j]
-								if k == '\r' || k == '\n' { // avoid logging \r or \n
-									break
-								}
-								if k == '?' || k == ' ' {
-									path = string(firstBytes[i:j])
-									errors.LogInfo(ctx, "realPath = "+path)
-									if pfb[path] == nil {
-										path = ""
-									}
-									break
-								}
-							}
-							break
 						}
 					}
 				}
-			}
-			fb := pfb[path]
-			if fb == nil {
-				return errors.New(`failed to find the default "path" config`).AtWarning()
+				fb = pfb[path]
+				if fb == nil {
+					return errors.New(`failed to find the default "path" config`).AtWarning()
+				}
 			}
 
 			ctx, cancel := context.WithCancel(ctx)

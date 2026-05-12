@@ -114,6 +114,10 @@ func TestVLessInbound(t *testing.T) {
 					{
 						"path": "/innerws",
 						"dest": "serve-ws-none"
+					},
+					{
+						"shortId": "1111111111111111",
+						"dest": 8443
 					}
 				]
 			}`,
@@ -151,6 +155,11 @@ func TestVLessInbound(t *testing.T) {
 						Type: "serve",
 						Dest: "serve-ws-none",
 						Xver: 0,
+					},
+					{
+						Type:    "tcp",
+						Dest:    "localhost:8443",
+						ShortId: []byte{0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11},
 					},
 				},
 			},

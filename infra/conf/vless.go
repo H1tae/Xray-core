@@ -2,6 +2,7 @@ package conf
 
 import (
 	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"path/filepath"
 	"runtime"
@@ -22,12 +23,13 @@ import (
 )
 
 type VLessInboundFallback struct {
-	Name string          `json:"name"`
-	Alpn string          `json:"alpn"`
-	Path string          `json:"path"`
-	Type string          `json:"type"`
-	Dest json.RawMessage `json:"dest"`
-	Xver uint64          `json:"xver"`
+	Name    string          `json:"name"`
+	Alpn    string          `json:"alpn"`
+	Path    string          `json:"path"`
+	Type    string          `json:"type"`
+	Dest    json.RawMessage `json:"dest"`
+	Xver    uint64          `json:"xver"`
+	ShortId string          `json:"shortId"`
 }
 
 type VLessInboundConfig struct {
@@ -166,13 +168,24 @@ func (c *VLessInboundConfig) Build() (proto.Message, error) {
 		} else {
 			_ = json.Unmarshal(fb.Dest, &s)
 		}
+		var shortId []byte
+		if fb.ShortId != "" {
+			if len(fb.ShortId) > 16 {
+				return nil, errors.New(`VLESS fallbacks: too long "shortId": `, fb.ShortId)
+			}
+			shortId = make([]byte, 8)
+			if _, err := hex.Decode(shortId, []byte(fb.ShortId)); err != nil {
+				return nil, errors.New(`VLESS fallbacks: invalid "shortId": `, fb.ShortId)
+			}
+		}
 		config.Fallbacks = append(config.Fallbacks, &inbound.Fallback{
-			Name: fb.Name,
-			Alpn: fb.Alpn,
-			Path: fb.Path,
-			Type: fb.Type,
-			Dest: s,
-			Xver: fb.Xver,
+			Name:    fb.Name,
+			Alpn:    fb.Alpn,
+			Path:    fb.Path,
+			Type:    fb.Type,
+			Dest:    s,
+			Xver:    fb.Xver,
+			ShortId: shortId,
 		})
 	}
 	for _, fb := range config.Fallbacks {

@@ -15,6 +15,7 @@ message Fallback {
   string type = 4;
   string dest = 5;
   uint64 xver = 6;
+  bytes short_id = 7;
 }
 
 message Config {
